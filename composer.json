@@ -14,13 +14,13 @@
             "type": "vcs",
             "url":  "https://github.com/argopecten/aegir-provision"
         },
+        "hosting": {
+            "type": "vcs",
+            "url":  "https://github.com/argopecten/aegir-hosting"
+        },
         "drupal": {
               "type": "composer",
               "url": "https://packages.drupal.org/7"
-        },
-        "hostmaster": {
-            "type": "vcs",
-            "url":  "https://github.com/argopecten/aegir-hostmaster"
         }
     },
     "require": {
@@ -41,7 +41,9 @@
         "drupal/drupal": "^7.100",
         "drush/drush": "^8.0",
         "symfony/filesystem": "~2.7 || ^3",
-        "webflo/drupal-finder": "^1.2.1"
+        "webflo/drupal-finder": "^1.2.1",
+        "aegir/provision": "dev-backport/boa",
+        "aegir/hosting": "dev-dev/composer"
     },
     "conflict": {
         "drupal/core": "8.*"
