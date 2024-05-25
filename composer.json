@@ -10,10 +10,6 @@
         }
     ],
     "repositories": {
-        "aegir": {
-            "type": "vcs",
-            "url":  "https://github.com/argopecten/aegir-composer"
-        },
         "provision": {
             "type": "vcs",
             "url":  "https://github.com/argopecten/aegir-provision"
@@ -45,8 +41,7 @@
         "drupal/drupal": "^7.100",
         "drush/drush": "^8.0",
         "symfony/filesystem": "~2.7 || ^3",
-        "webflo/drupal-finder": "^1.2.1",
-        "argopecten/hostmaster": "^3.182.1"
+        "webflo/drupal-finder": "^1.2.1"
     },
     "conflict": {
         "drupal/core": "8.*"
@@ -59,6 +54,7 @@
           "composer/installers": true,
           "cweagans/composer-patches": true,
           "drupal-composer/preserve-paths": true
+      }
     },
     "autoload": {
         "classmap": [
