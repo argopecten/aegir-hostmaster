@@ -9,6 +9,28 @@
             "role": ""
         }
     ],
+    "repositories": {
+          "aegir/drush8": {
+              "type": "vcs",
+              "url":  "https://github.com/argopecten/aegir-drush8"
+          },
+          "aegir/provision": {
+              "type": "vcs",
+              "url":  "https://github.com/argopecten/aegir-provision"
+          },
+          "aegir/hosting": {
+              "type": "vcs",
+              "url":  "https://github.com/argopecten/aegir-hosting"
+          },
+          "aegir/hostmaster": {
+              "type": "vcs",
+              "url":  "https://github.com/argopecten/aegir-hostmaster"
+          },
+          "drupal": {
+                "type": "composer",
+                "url": "https://packages.drupal.org/7"
+          }
+    },
     "require": {
         "php": ">=8.1",
         "ext-curl": "*",
@@ -52,5 +74,13 @@
         "drupal/core": "8.*"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "drupal-composer/preserve-paths": true,
+            "cweagans/composer-patches": true,
+            "composer/installers": true
+        }
+    }
 }
