@@ -31,12 +31,6 @@
         "drupal/hosting_https": "3.190",
         "drupal/hosting_deploy": "dev-3.x",
         "drupal/aegir_objects": "3.190",
-        "composer/installers": "^1.9",
-        "composer/semver": "^1.4",
-        "cweagans/composer-patches": "^1.7",
-        "drupal-composer/preserve-paths": "^0.1.6",
-        "drupal/composer_autoloader": "^1.0",
-        "drupal/drupal": "^7.100",
         "drupal/admin_menu": "3.0-rc7",
         "drupal/betterlogin": "1.5",
         "drupal/ctools": "1.21",
@@ -52,9 +46,7 @@
         "drupal/tfa": "2.3",
         "drupal/tfa_basic": "1.2",
         "drupal/timeago": "2.3",
-        "drush/drush": "dev-dev/aegir",
-        "symfony/filesystem": "~2.7 || ^3",
-        "webflo/drupal-finder": "^1.2.1"
+        "drush/drush": "dev-dev/aegir"
     },
     "conflict": {
         "drupal/core": "8.*"
