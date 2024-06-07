@@ -43,6 +43,7 @@
         "ext-zip": "*",
         "aegir/hosting": "dev-dev/composer",
         "aegir/provision": "dev-backport/boa",
+        "aegir/drush8": "dev-dev/aegir",
         "drupal/eldir": "3.190",
         "drupal/hosting_git": "3.190",
         "drupal/hosting_remote_import": "3.190",
@@ -67,8 +68,7 @@
         "drupal/libraries": "2.5",
         "drupal/tfa": "2.3",
         "drupal/tfa_basic": "1.2",
-        "drupal/timeago": "2.3",
-        "drush/drush": "dev-dev/aegir"
+        "drupal/timeago": "2.3"
     },
     "conflict": {
         "drupal/core": "8.*"
