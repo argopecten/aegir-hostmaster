@@ -42,7 +42,7 @@
         "ext-xml": "*",
         "ext-zip": "*",
         "aegir/hosting": "dev-dev/composer",
-        "aegir/provision": "dev-backport/boa",
+        "aegir/provision": "3.193-alpha1",
         "aegir/drush8": "^8.4.12",
         "drupal/eldir": "3.190",
         "drupal/hosting_git": "3.190",
