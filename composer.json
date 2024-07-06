@@ -41,7 +41,7 @@
         "ext-pdo": "*",
         "ext-xml": "*",
         "ext-zip": "*",
-        "aegir/hosting": "dev-dev/composer",
+        "aegir/hosting": "^3.193",
         "aegir/provision": "^3.193",
         "aegir/drush8": "^8.4.12",
         "drupal/eldir": "3.190",
