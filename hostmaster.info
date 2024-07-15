@@ -32,7 +32,7 @@ dependencies[] = hosting_server
 ;dependencies[] = hosting_migrate
 
 ;; Aegir golden contrib ;;
-dependencies[] = hosting_platform_composer_git
+; dependencies[] = hosting_platform_composer_git
 dependencies[] = hosting_platform_git
 
 ;; Drupal contrib ;;
