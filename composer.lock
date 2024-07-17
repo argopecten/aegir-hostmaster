@@ -144,6 +144,41 @@
             "time": "2024-06-07T08:48:57+00:00"
         },
         {
+            "name": "aegir/hosting",
+            "version": "3.193.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/argopecten/aegir-hosting.git",
+                "reference": "9bd38b538aacd5fbaa2cfb0c01f4d099af6f1ae6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/argopecten/aegir-hosting/zipball/9bd38b538aacd5fbaa2cfb0c01f4d099af6f1ae6",
+                "reference": "9bd38b538aacd5fbaa2cfb0c01f4d099af6f1ae6",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/process": "^3.4"
+            },
+            "type": "drupal-module",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Aegir maintainers",
+                    "homepage": "http://docs.aegirproject.org/en/3.x/community/core-team/"
+                }
+            ],
+            "description": "Drupal modules for front-end of Aegir",
+            "support": {
+                "issues": "https://www.drupal.org/project/issues/hosting",
+                "docs": "http://docs.aegirproject.org/",
+                "source": "https://github.com/argopecten/aegir-hosting/tree/3.193.1"
+            },
+            "time": "2024-07-06T14:40:39+00:00"
+        },
+        {
             "name": "aegir/provision",
             "version": "3.193.1",
             "source": {
