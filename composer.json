@@ -10,6 +10,10 @@
         }
     ],
     "repositories": {
+          "drupal/hosting_deploy": {
+              "type": "vcs",
+              "url":  "https://github.com/argopecten/hosting_deploy"
+          },
           "aegir/drush8": {
               "type": "vcs",
               "url":  "https://github.com/argopecten/aegir-drush8"
@@ -18,7 +22,7 @@
               "type": "vcs",
               "url":  "https://github.com/argopecten/aegir-provision"
           },
-          "aegir/hosting": {
+          "drupal/hosting": {
               "type": "vcs",
               "url":  "https://github.com/argopecten/aegir-hosting"
           },
@@ -41,34 +45,35 @@
         "ext-pdo": "*",
         "ext-xml": "*",
         "ext-zip": "*",
-        "aegir/hosting": "^3.193",
         "aegir/provision": "^3.193",
         "aegir/drush8": "^8.4.12",
-        "drupal/eldir": "3.190",
-        "drupal/hosting_git": "3.190",
-        "drupal/hosting_remote_import": "3.190",
-        "drupal/hosting_site_backup_manager": "3.190",
-        "drupal/hosting_tasks_extra": "3.191",
-        "drupal/hosting_civicrm": "3.190",
-        "drupal/hosting_logs": "3.190",
-        "drupal/hosting_https": "3.190",
-        "drupal/hosting_deploy": "dev-3.x",
-        "drupal/aegir_objects": "3.190",
-        "drupal/admin_menu": "3.0-rc7",
-        "drupal/betterlogin": "1.5",
-        "drupal/ctools": "1.21",
-        "drupal/entity": "1.10",
-        "drupal/features": "2.15",
-        "drupal/module_filter": "2.3",
-        "drupal/openidadmin": "1.0",
-        "drupal/overlay_paths": "1.3",
-        "drupal/r4032login": "1.8",
-        "drupal/views": "3.29",
-        "drupal/views_bulk_operations": "3.7",
-        "drupal/libraries": "2.5",
-        "drupal/tfa": "2.3",
-        "drupal/tfa_basic": "1.2",
-        "drupal/timeago": "2.3"
+        "drupal/aegir_objects": "^3.190",
+        "drupal/eldir": "^3.190",
+        "drupal/drupal": "^7.100",
+        "drupal/hosting": "^3.193",
+        "drupal/hosting_civicrm": "^3.190",
+        "drupal/hosting_deploy": "^3.193",
+        "drupal/hosting_git": "^3.190",
+        "drupal/hosting_https": "^3.190",
+        "drupal/hosting_logs": "^3.190",
+        "drupal/hosting_remote_import": "^3.190",
+        "drupal/hosting_site_backup_manager": "^3.190",
+        "drupal/hosting_tasks_extra": "^3.191",
+        "drupal/admin_menu": "^3.0-rc7",
+        "drupal/betterlogin": "^1.5",
+        "drupal/ctools": "^1.21",
+        "drupal/entity": "^1.11",
+        "drupal/features": "^2.15",
+        "drupal/module_filter": "^2.3",
+        "drupal/openidadmin": "^1.0",
+        "drupal/overlay_paths": "^1.3",
+        "drupal/r4032login": "^1.8",
+        "drupal/views": "^3.29",
+        "drupal/views_bulk_operations": "^3.7",
+        "drupal/libraries": "^2.5",
+        "drupal/tfa": "^2.3",
+        "drupal/tfa_basic": "^1.2",
+        "drupal/timeago": "^2.3"
     },
     "conflict": {
         "drupal/core": "8.*"
