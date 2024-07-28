@@ -14,7 +14,7 @@
               "type": "vcs",
               "url":  "https://github.com/argopecten/hosting_deploy"
           },
-          "aegir/drush8": {
+          "drush/drush": {
               "type": "vcs",
               "url":  "https://github.com/argopecten/aegir-drush8"
           },
@@ -46,7 +46,7 @@
         "ext-xml": "*",
         "ext-zip": "*",
         "aegir/provision": "^3.193",
-        "aegir/drush8": "^8.4.12",
+        "drush/drush": "^8.4.12",
         "drupal/aegir_objects": "^3.190",
         "drupal/eldir": "^3.190",
         "drupal/drupal": "^7.100",
