@@ -4,180 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b42f75185fe4120822eaa6f03b313aa",
+    "content-hash": "d28429f8d38fd7cc747a73c9815060b0",
     "packages": [
-        {
-            "name": "aegir/drush8",
-            "version": "8.4.12.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/argopecten/aegir-drush8.git",
-                "reference": "d77f5f774503a1c927d77280c3427f145ae5b563"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/argopecten/aegir-drush8/zipball/d77f5f774503a1c927d77280c3427f145ae5b563",
-                "reference": "d77f5f774503a1c927d77280c3427f145ae5b563",
-                "shasum": ""
-            },
-            "require": {
-                "consolidation/annotated-command": "^2.12.0",
-                "consolidation/output-formatters": "~3",
-                "pear/console_table": "~1.3.1",
-                "php": ">=5.4.5",
-                "psr/log": "~1.0",
-                "psy/psysh": "~0.6",
-                "symfony/console": "~2.7|^3|^4.4",
-                "symfony/event-dispatcher": "~2.7|^3|^4.4",
-                "symfony/finder": "~2.7|^3|^4.4",
-                "symfony/process": "~2.7|^3|^4.4",
-                "symfony/var-dumper": "~2.7|^3|^4.4|^5",
-                "symfony/yaml": "~2.3|^3|^4.4",
-                "webflo/drupal-finder": "^1.1.0",
-                "webmozart/path-util": "~2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4 || ^7.5.20 || ^9",
-                "squizlabs/php_codesniffer": "^3",
-                "symfony/console": "~2.7",
-                "symfony/event-dispatcher": "~2.7",
-                "symfony/finder": "~2.7",
-                "symfony/process": "2.7.*",
-                "symfony/var-dumper": "~2.7",
-                "symfony/yaml": "~2.3",
-                "yoast/phpunit-polyfills": "^1"
-            },
-            "suggest": {
-                "drush/config-extra": "Provides configuration workflow commands, such as config-merge.",
-                "ext-pcntl": "*"
-            },
-            "bin": [
-                "drush",
-                "drush.launcher",
-                "drush.php",
-                "drush.complete.sh"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "8.3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Drush\\": "lib/",
-                    "Consolidation\\": "lib/"
-                },
-                "psr-4": {
-                    "Drush\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-0": {
-                    "Unish": "tests/"
-                }
-            },
-            "scripts": {
-                "phar:install-tools": [
-                    "curl -L https://github.com/box-project/box/releases/download/4.3.7/box.phar --output box.phar"
-                ],
-                "phar:build": [
-                    "composer install -n --no-dev && php box.phar compile"
-                ],
-                "lint": [
-                    "find includes -name '*.inc' -print0 | xargs -0 -n1 php -l",
-                    "find lib/Drush -name '*.php' -print0 | xargs -0 -n1 php -l"
-                ]
-            },
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Moshe Weitzman",
-                    "email": "weitzman@tejasa.com"
-                },
-                {
-                    "name": "Owen Barton",
-                    "email": "drupal@owenbarton.com"
-                },
-                {
-                    "name": "Mark Sonnabaum",
-                    "email": "marksonnabaum@gmail.com"
-                },
-                {
-                    "name": "Antoine Beaupré",
-                    "email": "anarcat@koumbit.org"
-                },
-                {
-                    "name": "Greg Anderson",
-                    "email": "greg.1.anderson@greenknowe.org"
-                },
-                {
-                    "name": "Jonathan Araña Cruz",
-                    "email": "jonhattan@faita.net"
-                },
-                {
-                    "name": "Jonathan Hedstrom",
-                    "email": "jhedstrom@gmail.com"
-                },
-                {
-                    "name": "Christopher Gervais",
-                    "email": "chris@ergonlogic.com"
-                },
-                {
-                    "name": "Dave Reid",
-                    "email": "dave@davereid.net"
-                },
-                {
-                    "name": "Damian Lee",
-                    "email": "damiankloip@googlemail.com"
-                }
-            ],
-            "description": "BOA fork of Drush 8.x compatible with Drupal 10",
-            "homepage": "http://www.drush.org",
-            "support": {
-                "forum": "http://drupal.stackexchange.com/questions/tagged/drush",
-                "irc": "irc://irc.freenode.org/drush",
-                "source": "https://github.com/argopecten/aegir-drush8/tree/8.4.12.9"
-            },
-            "time": "2024-06-07T08:48:57+00:00"
-        },
-        {
-            "name": "aegir/hosting",
-            "version": "3.193.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/argopecten/aegir-hosting.git",
-                "reference": "9bd38b538aacd5fbaa2cfb0c01f4d099af6f1ae6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/argopecten/aegir-hosting/zipball/9bd38b538aacd5fbaa2cfb0c01f4d099af6f1ae6",
-                "reference": "9bd38b538aacd5fbaa2cfb0c01f4d099af6f1ae6",
-                "shasum": ""
-            },
-            "require": {
-                "symfony/process": "^3.4"
-            },
-            "type": "drupal-module",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Aegir maintainers",
-                    "homepage": "http://docs.aegirproject.org/en/3.x/community/core-team/"
-                }
-            ],
-            "description": "Drupal modules for front-end of Aegir",
-            "support": {
-                "issues": "https://www.drupal.org/project/issues/hosting",
-                "docs": "http://docs.aegirproject.org/",
-                "source": "https://github.com/argopecten/aegir-hosting/tree/3.193.1"
-            },
-            "time": "2024-07-06T14:40:39+00:00"
-        },
         {
             "name": "aegir/provision",
             "version": "3.193.1",
@@ -2899,6 +2727,143 @@
             }
         },
         {
+            "name": "drush/drush",
+            "version": "8.4.12.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/argopecten/aegir-drush8.git",
+                "reference": "d77f5f774503a1c927d77280c3427f145ae5b563"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/argopecten/aegir-drush8/zipball/d77f5f774503a1c927d77280c3427f145ae5b563",
+                "reference": "d77f5f774503a1c927d77280c3427f145ae5b563",
+                "shasum": ""
+            },
+            "require": {
+                "consolidation/annotated-command": "^2.12.0",
+                "consolidation/output-formatters": "~3",
+                "pear/console_table": "~1.3.1",
+                "php": ">=5.4.5",
+                "psr/log": "~1.0",
+                "psy/psysh": "~0.6",
+                "symfony/console": "~2.7|^3|^4.4",
+                "symfony/event-dispatcher": "~2.7|^3|^4.4",
+                "symfony/finder": "~2.7|^3|^4.4",
+                "symfony/process": "~2.7|^3|^4.4",
+                "symfony/var-dumper": "~2.7|^3|^4.4|^5",
+                "symfony/yaml": "~2.3|^3|^4.4",
+                "webflo/drupal-finder": "^1.1.0",
+                "webmozart/path-util": "~2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4 || ^7.5.20 || ^9",
+                "squizlabs/php_codesniffer": "^3",
+                "symfony/console": "~2.7",
+                "symfony/event-dispatcher": "~2.7",
+                "symfony/finder": "~2.7",
+                "symfony/process": "2.7.*",
+                "symfony/var-dumper": "~2.7",
+                "symfony/yaml": "~2.3",
+                "yoast/phpunit-polyfills": "^1"
+            },
+            "suggest": {
+                "drush/config-extra": "Provides configuration workflow commands, such as config-merge.",
+                "ext-pcntl": "*"
+            },
+            "bin": [
+                "drush",
+                "drush.launcher",
+                "drush.php",
+                "drush.complete.sh"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "8.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Drush\\": "lib/",
+                    "Consolidation\\": "lib/"
+                },
+                "psr-4": {
+                    "Drush\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-0": {
+                    "Unish": "tests/"
+                }
+            },
+            "scripts": {
+                "phar:install-tools": [
+                    "curl -L https://github.com/box-project/box/releases/download/4.3.7/box.phar --output box.phar"
+                ],
+                "phar:build": [
+                    "composer install -n --no-dev && php box.phar compile"
+                ],
+                "lint": [
+                    "find includes -name '*.inc' -print0 | xargs -0 -n1 php -l",
+                    "find lib/Drush -name '*.php' -print0 | xargs -0 -n1 php -l"
+                ]
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Moshe Weitzman",
+                    "email": "weitzman@tejasa.com"
+                },
+                {
+                    "name": "Owen Barton",
+                    "email": "drupal@owenbarton.com"
+                },
+                {
+                    "name": "Mark Sonnabaum",
+                    "email": "marksonnabaum@gmail.com"
+                },
+                {
+                    "name": "Antoine Beaupré",
+                    "email": "anarcat@koumbit.org"
+                },
+                {
+                    "name": "Greg Anderson",
+                    "email": "greg.1.anderson@greenknowe.org"
+                },
+                {
+                    "name": "Jonathan Araña Cruz",
+                    "email": "jonhattan@faita.net"
+                },
+                {
+                    "name": "Jonathan Hedstrom",
+                    "email": "jhedstrom@gmail.com"
+                },
+                {
+                    "name": "Christopher Gervais",
+                    "email": "chris@ergonlogic.com"
+                },
+                {
+                    "name": "Dave Reid",
+                    "email": "dave@davereid.net"
+                },
+                {
+                    "name": "Damian Lee",
+                    "email": "damiankloip@googlemail.com"
+                }
+            ],
+            "description": "BOA fork of Drush 8.x compatible with Drupal 10",
+            "homepage": "http://www.drush.org",
+            "support": {
+                "forum": "http://drupal.stackexchange.com/questions/tagged/drush",
+                "irc": "irc://irc.freenode.org/drush",
+                "source": "https://github.com/argopecten/aegir-drush8/tree/8.4.12.9"
+            },
+            "time": "2024-06-07T08:48:57+00:00"
+        },
+        {
             "name": "nikic/php-parser",
             "version": "v5.1.0",
             "source": {
@@ -4035,16 +4000,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v5.4.40",
+            "version": "v5.4.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "af8868a6e9d6082dfca11f1a1f205ae93a8b6d93"
+                "reference": "0c17c56d8ea052fc33942251c75d0e28936e043d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/af8868a6e9d6082dfca11f1a1f205ae93a8b6d93",
-                "reference": "af8868a6e9d6082dfca11f1a1f205ae93a8b6d93",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/0c17c56d8ea052fc33942251c75d0e28936e043d",
+                "reference": "0c17c56d8ea052fc33942251c75d0e28936e043d",
                 "shasum": ""
             },
             "require": {
@@ -4104,7 +4069,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v5.4.40"
+                "source": "https://github.com/symfony/var-dumper/tree/v5.4.42"
             },
             "funding": [
                 {
@@ -4120,7 +4085,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:33:22+00:00"
+            "time": "2024-07-26T12:23:09+00:00"
         },
         {
             "name": "symfony/yaml",
