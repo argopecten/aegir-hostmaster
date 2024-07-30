@@ -10,6 +10,10 @@
         }
     ],
     "repositories": {
+          "drupal/hosting_civicrm": {
+              "type": "vcs",
+              "url":  "https://github.com/argopecten/hosting_civicrm"
+          },
           "drupal/hosting_deploy": {
               "type": "vcs",
               "url":  "https://github.com/argopecten/hosting_deploy"
@@ -51,7 +55,7 @@
         "drupal/eldir": "^3.190",
         "drupal/drupal": "^7.100",
         "drupal/hosting": "^3.193",
-        "drupal/hosting_civicrm": "^3.190",
+        "drupal/hosting_civicrm": "^3.193",
         "drupal/hosting_deploy": "^3.193",
         "drupal/hosting_git": "^3.190",
         "drupal/hosting_https": "^3.190",
