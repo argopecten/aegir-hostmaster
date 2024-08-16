@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9da0e2f2f6e8f5961d79fdf27fd904df",
+    "content-hash": "61081640142221716f7394cd13933ff8",
     "packages": [
         {
             "name": "aegir/provision",
@@ -2696,7 +2696,7 @@
         },
         {
             "name": "drush/drush",
-            "version": "8.4.12.10",
+            "version": "dev-dev/main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/argopecten/aegir-drush8.git",
@@ -4286,7 +4286,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "aegir/provision": 20
+        "aegir/provision": 20,
+        "drush/drush": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
