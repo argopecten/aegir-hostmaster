@@ -27,13 +27,15 @@ dependencies[] = hosting_platform
 dependencies[] = hosting_site
 dependencies[] = hosting_web_server
 dependencies[] = hosting_server
-;dependencies[] = hosting_clone
+dependencies[] = hosting_clone
 ;dependencies[] = hosting_cron
-;dependencies[] = hosting_migrate
+dependencies[] = hosting_migrate
 
 ;; Aegir golden contrib ;;
-; dependencies[] = hosting_platform_composer_git
-dependencies[] = hosting_platform_git
+; modules from Aegir Deploy (hosting_deploy)
+dependencies[] = hosting_platform_composer_git
+; dependencies[] = hosting_platform_git
+; dependencies[] = hosting_platform_composer
 
 ;; Drupal contrib ;;
 dependencies[] = admin_menu
