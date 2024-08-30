@@ -56,7 +56,7 @@
         "drupal/drupal": "^7.100",
         "drupal/hosting": "^3.193",
         "drupal/hosting_civicrm": "^3.193",
-        "drupal/hosting_deploy": "^3.193",
+        "drupal/hosting_deploy": "dev-dev/main",
         "drupal/hosting_git": "^3.190",
         "drupal/hosting_https": "^3.190",
         "drupal/hosting_logs": "^3.190",

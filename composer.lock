@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "61081640142221716f7394cd13933ff8",
+    "content-hash": "c3f30dd8ab5a83b746133ac6c41c89d7",
     "packages": [
         {
             "name": "aegir/provision",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/argopecten/aegir-provision.git",
-                "reference": "a24aeb8373ac1c198ee05c4db342241a3e3199d7"
+                "reference": "9862ba476186e0cfd3633d7b44ff03083fade34b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/argopecten/aegir-provision/zipball/a24aeb8373ac1c198ee05c4db342241a3e3199d7",
-                "reference": "a24aeb8373ac1c198ee05c4db342241a3e3199d7",
+                "url": "https://api.github.com/repos/argopecten/aegir-provision/zipball/9862ba476186e0cfd3633d7b44ff03083fade34b",
+                "reference": "9862ba476186e0cfd3633d7b44ff03083fade34b",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,158 @@
                 "docs": "http://docs.aegirproject.org/",
                 "source": "https://github.com/argopecten/aegir-provision/tree/dev/main"
             },
-            "time": "2024-08-02T13:49:58+00:00"
+            "time": "2024-08-20T16:12:28+00:00"
+        },
+        {
+            "name": "composer/installers",
+            "version": "v1.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/installers.git",
+                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/installers/zipball/d20a64ed3c94748397ff5973488761b22f6d3f19",
+                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0 || ^2.0"
+            },
+            "replace": {
+                "roundcube/plugin-installer": "*",
+                "shama/baton": "*"
+            },
+            "require-dev": {
+                "composer/composer": "1.6.* || ^2.0",
+                "composer/semver": "^1 || ^3",
+                "phpstan/phpstan": "^0.12.55",
+                "phpstan/phpstan-phpunit": "^0.12.16",
+                "symfony/phpunit-bridge": "^4.2 || ^5",
+                "symfony/process": "^2.3"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Composer\\Installers\\Plugin",
+                "branch-alias": {
+                    "dev-main": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\Installers\\": "src/Composer/Installers"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kyle Robinson Young",
+                    "email": "kyle@dontkry.com",
+                    "homepage": "https://github.com/shama"
+                }
+            ],
+            "description": "A multi-framework Composer library installer",
+            "homepage": "https://composer.github.io/installers/",
+            "keywords": [
+                "Craft",
+                "Dolibarr",
+                "Eliasis",
+                "Hurad",
+                "ImageCMS",
+                "Kanboard",
+                "Lan Management System",
+                "MODX Evo",
+                "MantisBT",
+                "Mautic",
+                "Maya",
+                "OXID",
+                "Plentymarkets",
+                "Porto",
+                "RadPHP",
+                "SMF",
+                "Starbug",
+                "Thelia",
+                "Whmcs",
+                "WolfCMS",
+                "agl",
+                "aimeos",
+                "annotatecms",
+                "attogram",
+                "bitrix",
+                "cakephp",
+                "chef",
+                "cockpit",
+                "codeigniter",
+                "concrete5",
+                "croogo",
+                "dokuwiki",
+                "drupal",
+                "eZ Platform",
+                "elgg",
+                "expressionengine",
+                "fuelphp",
+                "grav",
+                "installer",
+                "itop",
+                "joomla",
+                "known",
+                "kohana",
+                "laravel",
+                "lavalite",
+                "lithium",
+                "magento",
+                "majima",
+                "mako",
+                "mediawiki",
+                "miaoxing",
+                "modulework",
+                "modx",
+                "moodle",
+                "osclass",
+                "pantheon",
+                "phpbb",
+                "piwik",
+                "ppi",
+                "processwire",
+                "puppet",
+                "pxcms",
+                "reindex",
+                "roundcube",
+                "shopware",
+                "silverstripe",
+                "sydes",
+                "sylius",
+                "symfony",
+                "tastyigniter",
+                "typo3",
+                "wordpress",
+                "yawik",
+                "zend",
+                "zikula"
+            ],
+            "support": {
+                "issues": "https://github.com/composer/installers/issues",
+                "source": "https://github.com/composer/installers/tree/v1.12.0"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-09-13T08:19:44+00:00"
         },
         {
             "name": "consolidation/annotated-command",
@@ -677,7 +828,7 @@
                     "homepage": "https://www.drupal.org/user/693738"
                 },
                 {
-                    "name": "Gábor Hojtsy",
+                    "name": "gábor hojtsy",
                     "homepage": "https://www.drupal.org/user/4166"
                 },
                 {
@@ -1342,16 +1493,16 @@
         },
         {
             "name": "drupal/hosting_deploy",
-            "version": "3.193.1",
+            "version": "dev-dev/main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/argopecten/hosting_deploy.git",
-                "reference": "35cfc8a7c7bee94807add585ccdf5e6d2cea5960"
+                "reference": "1628b104f485e333ee71bcae15dd521939e0d861"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/argopecten/hosting_deploy/zipball/35cfc8a7c7bee94807add585ccdf5e6d2cea5960",
-                "reference": "35cfc8a7c7bee94807add585ccdf5e6d2cea5960",
+                "url": "https://api.github.com/repos/argopecten/hosting_deploy/zipball/1628b104f485e333ee71bcae15dd521939e0d861",
+                "reference": "1628b104f485e333ee71bcae15dd521939e0d861",
                 "shasum": ""
             },
             "require": {
@@ -1372,9 +1523,9 @@
             "support": {
                 "issues": "https://www.drupal.org/project/issues/hosting_deploy",
                 "docs": "http://docs.aegirproject.org/",
-                "source": "https://github.com/argopecten/hosting_deploy/tree/3.193.1"
+                "source": "https://github.com/argopecten/hosting_deploy/tree/dev/main"
             },
-            "time": "2024-07-17T06:37:04+00:00"
+            "time": "2024-08-30T09:29:10+00:00"
         },
         {
             "name": "drupal/hosting_git",
@@ -2700,15 +2851,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/argopecten/aegir-drush8.git",
-                "reference": "9217a2fc433d298f1ad863223b9b169822b5d4dd"
+                "reference": "014935382579f0b38d2e0f589091b019b3713f19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/argopecten/aegir-drush8/zipball/9217a2fc433d298f1ad863223b9b169822b5d4dd",
-                "reference": "9217a2fc433d298f1ad863223b9b169822b5d4dd",
+                "url": "https://api.github.com/repos/argopecten/aegir-drush8/zipball/014935382579f0b38d2e0f589091b019b3713f19",
+                "reference": "014935382579f0b38d2e0f589091b019b3713f19",
                 "shasum": ""
             },
             "require": {
+                "composer/installers": "^1.9",
                 "consolidation/annotated-command": "^2.12.0",
                 "consolidation/output-formatters": "~3",
                 "pear/console_table": "~1.3.1",
@@ -2745,7 +2897,7 @@
                 "drush.php",
                 "drush.complete.sh"
             ],
-            "type": "library",
+            "type": "drupal-drush",
             "extra": {
                 "branch-alias": {
                     "dev-master": "8.3.x-dev"
@@ -2827,9 +2979,9 @@
             "support": {
                 "forum": "http://drupal.stackexchange.com/questions/tagged/drush",
                 "irc": "irc://irc.freenode.org/drush",
-                "source": "https://github.com/argopecten/aegir-drush8/tree/8.4.12.10"
+                "source": "https://github.com/argopecten/aegir-drush8/tree/dev/main"
             },
-            "time": "2024-07-30T14:19:53+00:00"
+            "time": "2024-08-16T15:03:38+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -4287,7 +4439,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "aegir/provision": 20,
-        "drush/drush": 20
+        "drush/drush": 20,
+        "drupal/hosting_deploy": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
