@@ -1925,12 +1925,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/argopecten/hosting_tasks_extra.git",
-                "reference": "e94f8cf45613889431247e3659a7329278498524"
+                "reference": "e5570a1eda292e4b572afa11f5e0da41ebaca054"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/argopecten/hosting_tasks_extra/zipball/e94f8cf45613889431247e3659a7329278498524",
-                "reference": "e94f8cf45613889431247e3659a7329278498524",
+                "url": "https://api.github.com/repos/argopecten/hosting_tasks_extra/zipball/e5570a1eda292e4b572afa11f5e0da41ebaca054",
+                "reference": "e5570a1eda292e4b572afa11f5e0da41ebaca054",
                 "shasum": ""
             },
             "require": {
@@ -1952,7 +1952,7 @@
                 "docs": "http://docs.aegirproject.org/",
                 "source": "https://github.com/argopecten/hosting_tasks_extra/tree/dev/main"
             },
-            "time": "2024-09-01T12:21:45+00:00"
+            "time": "2024-09-02T11:14:42+00:00"
         },
         {
             "name": "drupal/hosting_web_server",
