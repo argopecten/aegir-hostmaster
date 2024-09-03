@@ -10,6 +10,10 @@
         }
     ],
     "repositories": {
+          "drupal/hosting_tasks_extra": {
+              "type": "vcs",
+              "url":  "https://github.com/argopecten/hosting_tasks_extra"
+          },
           "drupal/hosting_civicrm": {
               "type": "vcs",
               "url":  "https://github.com/argopecten/hosting_civicrm"
@@ -49,7 +53,7 @@
         "ext-pdo": "*",
         "ext-xml": "*",
         "ext-zip": "*",
-        "aegir/provision": "^3.193",
+        "aegir/provision": "^3.193.2",
         "drush/drush": "^8.4.12",
         "drupal/aegir_objects": "^3.190",
         "drupal/eldir": "^3.190",
@@ -62,7 +66,7 @@
         "drupal/hosting_logs": "^3.190",
         "drupal/hosting_remote_import": "^3.190",
         "drupal/hosting_site_backup_manager": "^3.190",
-        "drupal/hosting_tasks_extra": "^3.191",
+        "drupal/hosting_tasks_extra": "^3.193",
         "drupal/admin_menu": "^3.0-rc7",
         "drupal/betterlogin": "^1.5",
         "drupal/ctools": "^1.21",
