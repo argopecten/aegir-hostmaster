@@ -53,7 +53,7 @@
         "ext-pdo": "*",
         "ext-xml": "*",
         "ext-zip": "*",
-        "aegir/provision": "^3.193.2",
+        "aegir/provision": "^3.193.3",
         "drush/drush": "^8.4.12",
         "drupal/aegir_objects": "^3.190",
         "drupal/eldir": "^3.190",
