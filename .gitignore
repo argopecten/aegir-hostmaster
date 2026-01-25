@@ -1,2 +1,57 @@
-themes/*
-modules/*
+# Ignore core and vendor directories installed via Composer
+/vendor
+/web/core
+/web/modules/contrib
+/web/themes/contrib
+/web/profiles/contrib
+/web/libraries
+
+# Ignore Drupal's file directories
+/web/sites/*/files
+/web/sites/*/private
+
+# Ignore configuration and sensitive files
+/web/sites/*/settings.local.php
+/web/sites/*/services*.yml
+!/web/sites/default/default.services.yml
+
+# Ignore database credentials backup
+.aegir.db.conf
+
+# Ignore paths that contain user-generated content
+/web/sites/*/files
+/web/sites/*/private
+
+# Ignore development and IDE files
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Ignore backup directories
+/backups
+
+# Ignore Composer lock for library projects (keep for application projects)
+# Uncomment the next line if this is a library
+# /composer.lock
+
+# Ignore Drush backup and cache
+/drush/cache
+*.sql
+*.sql.gz
+
+# Ignore temporary files
+*.swp
+*.swo
+*~
+.*.tmp
+
+# Ignore log files
+*.log
+/web/sites/*/logs
+
+# Ignore configuration sync directory if not tracking config in git
+# Uncomment if you don't want to track exported config
+# /config/sync
