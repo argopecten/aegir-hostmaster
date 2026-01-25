@@ -1,123 +1,124 @@
 {
-    "name": "aegir/aegir",
-    "description": "Aegir Hosting System - Drupal 11 deployment with Composer",
-    "type": "project",
-    "license": "GPL-2.0-or-later",
-    "authors": [
-        {
-            "name": "Péter Gerner",
-            "role": "Maintainer"
-        }
-    ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/argopecten/aegir-provision"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/argopecten/aegir-hosting"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/argopecten/hosting_tasks_extra"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/argopecten/hosting_civicrm"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/argopecten/hosting_deploy"
-        },
-        {
-            "type": "composer",
-            "url": "https://packages.drupal.org/11"
-        }
-    ],
-    "require": {
-        "php": ">=8.3",
-        "composer/installers": "^2.0",
-        "cweagans/composer-patches": "^1.7",
-        "drupal/core-composer-scaffold": "^11.0",
-        "drupal/core-recommended": "^11.0",
-        "drush/drush": "^13.0",
-        "aegir/provision": "dev-main",
-        "drupal/hosting": "dev-main",
-        "drupal/hosting_tasks_extra": "dev-main",
-        "drupal/hosting_civicrm": "dev-main",
-        "drupal/hosting_deploy": "dev-main",
-        "drupal/admin_toolbar": "^3.4",
-        "drupal/entity": "^1.4"
-    },
-    "require-dev": {
-        "drupal/core-dev": "^11.0"
-    },
-    "conflict": {
-        "drupal/drupal": "*"
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "config": {
-        "allow-plugins": {
-            "composer/installers": true,
-            "drupal/core-composer-scaffold": true,
-            "cweagans/composer-patches": true,
-            "phpstan/extension-installer": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "php-http/discovery": true
-        },
-        "sort-packages": true,
-        "platform": {
-            "php": "8.3"
-        }
-    },
-    "extra": {
-        "drupal-scaffold": {
-            "locations": {
-                "web-root": "web/"
-            },
-            "file-mapping": {
-                "[web-root]/sites/development.services.yml": false,
-                "[web-root]/.htaccess": false
-            }
-        },
-        "installer-paths": {
-            "web/core": [
-                "type:drupal-core"
-            ],
-            "web/libraries/{$name}": [
-                "type:drupal-library"
-            ],
-            "web/modules/contrib/{$name}": [
-                "type:drupal-module"
-            ],
-            "web/profiles/contrib/{$name}": [
-                "type:drupal-profile"
-            ],
-            "web/themes/contrib/{$name}": [
-                "type:drupal-theme"
-            ],
-            "drush/Commands/contrib/{$name}": [
-                "type:drupal-drush"
-            ],
-            "web/modules/custom/{$name}": [
-                "type:drupal-custom-module"
-            ],
-            "web/profiles/custom/{$name}": [
-                "type:drupal-custom-profile"
-            ],
-            "web/themes/custom/{$name}": [
-                "type:drupal-custom-theme"
-            ]
-        }
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "@php -r \"if (!file_exists('web/sites/default/settings.php')) { echo 'Run ./install.sh to complete Aegir installation\\n'; }\""
-        ],
-        "post-update-cmd": [
-            "@php -r \"echo 'Run ./update.sh to update database and clear caches\\n';\""
-        ]
+  "name": "argopecten/aegir-hostmaster",
+  "description": "Aegir Hosting System - Drupal 11 deployment with Composer",
+  "type": "project",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://aegir.hu/",
+  "keywords": [
+    "aegir",
+    "hosting",
+    "frontend",
+    "entities",
+    "drupal"
+  ],
+  "authors": [
+    {
+      "name": "Aegir D11 Project",
+      "homepage": "https://aegir.hu/"
     }
+  ],
+  "support": {
+    "issues": "https://github.com/argopecten/aegir-hostmaster/issues",
+    "source": "https://github.com/argopecten/aegir-hostmaster",
+    "docs": "https://github.com/argopecten/aegir-hostmaster/wiki"
+  },
+  "repositories": {
+    "aegir/provision": {
+        "type": "vcs",
+        "url":  "https://github.com/argopecten/aegir-provision"
+    },
+    "aegir/hosting": {
+      "type": "vcs",
+      "url": "https://github.com/argopecten/aegir-hosting"
+    },
+    "aegir/eldir": {
+      "type": "vcs",
+      "url": "https://github.com/argopecten/aegir-eldir"
+    },
+    "drupal": {
+      "type": "composer",
+      "url": "https://packages.drupal.org/8"
+    }
+  },
+  "require": {
+    "php": ">=8.3",
+    "argopecten/aegir-provision": "dev-dev/d11-new as 11.x-dev",
+    "argopecten/aegir-eldir": "dev-dev/d11-new",
+    "argopecten/aegir-hosting": "dev-dev/d11-new",
+    "composer/installers": "^2.0",
+    "cweagans/composer-patches": "^1.7",
+    "drupal/core-composer-scaffold": "^11.0",
+    "drupal/core-recommended": "^11.0",
+    "drush/drush": "^13.0"
+  },
+  "require-dev": {
+    "drupal/core-dev": "^11.0"
+  },
+  "conflict": {
+    "drupal/drupal": "*"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "allow-plugins": {
+      "composer/installers": true,
+      "cweagans/composer-patches": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "drupal/core-composer-scaffold": true,
+      "php-http/discovery": true,
+      "phpstan/extension-installer": true
+    },
+    "platform": {
+      "php": "8.3"
+    },
+    "sort-packages": true
+  },
+  "extra": {
+    "drupal-scaffold": {
+      "locations": {
+        "web-root": "web/"
+      },
+      "file-mapping": {
+        "[web-root]/sites/development.services.yml": false,
+        "[web-root]/.htaccess": false
+      }
+    },
+    "installer-paths": {
+      "web/core": [
+        "type:drupal-core"
+      ],
+      "web/libraries/{$name}": [
+        "type:drupal-library"
+      ],
+      "web/modules/contrib/{$name}": [
+        "type:drupal-module"
+      ],
+      "web/profiles/contrib/{$name}": [
+        "type:drupal-profile"
+      ],
+      "web/themes/contrib/{$name}": [
+        "type:drupal-theme"
+      ],
+      "drush/Commands/contrib/{$name}": [
+        "type:drupal-drush"
+      ],
+      "web/modules/custom/{$name}": [
+        "type:drupal-custom-module"
+      ],
+      "web/profiles/custom/{$name}": [
+        "type:drupal-custom-profile"
+      ],
+      "web/themes/custom/{$name}": [
+        "type:drupal-custom-theme"
+      ]
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "@php -r \"if (!file_exists('web/sites/default/settings.php')) { echo 'Run ./install.sh to complete Aegir installation\\n'; }\""
+    ],
+    "post-update-cmd": [
+      "@php -r \"echo 'Run ./update.sh to update database and clear caches\\n';\""
+    ]
+  }
 }
