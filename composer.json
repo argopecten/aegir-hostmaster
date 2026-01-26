@@ -42,7 +42,7 @@
   },
   "require": {
     "php": ">=8.3",
-    "argopecten/aegir-provision": "dev-dev/d11-new as 11.x-dev",
+    "argopecten/aegir-provision": "dev-dev/d11-new",
     "argopecten/aegir-eldir": "dev-dev/d11-new",
     "argopecten/aegir-hosting": "dev-dev/d11-new",
     "composer/installers": "^2.0",
@@ -68,6 +68,10 @@
       "php-http/discovery": true,
       "phpstan/extension-installer": true,
       "tbachert/spi": true
+    },
+    "preferred-install": {
+      "argopecten/*": "source",
+      "*": "dist"
     },
     "platform": {
       "php": "8.3"
