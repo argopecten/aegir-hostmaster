@@ -116,10 +116,10 @@
   },
   "_scripts-disabled": {
     "post-install-cmd": [
-      "@php -r \"if (!file_exists('web/sites/default/settings.php')) { echo 'Run ./install.sh to complete Aegir installation\\n'; }\""
+      "@php -r \"if (!file_exists('web/sites/default/settings.php')) { echo 'Run ./scripts/install.sh to complete Aegir installation\\n'; }\""
     ],
     "post-update-cmd": [
-      "@php -r \"echo 'Run ./update.sh to update database and clear caches\\n';\""
+      "@php -r \"echo 'Run ./scripts/update.sh to update database and clear caches\\n';\""
     ]
   }
 }

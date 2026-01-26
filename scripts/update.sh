@@ -25,7 +25,7 @@ fi
 # Check if Drupal is installed
 if [ ! -f "web/sites/default/settings.php" ]; then
     echo -e "${RED}Error: Drupal does not appear to be installed${NC}"
-    echo -e "${YELLOW}Please run ./install.sh first${NC}"
+    echo -e "${YELLOW}Please run ./scripts/install.sh first${NC}"
     exit 1
 fi
 

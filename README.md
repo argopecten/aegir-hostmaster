@@ -51,7 +51,7 @@ cd aegir
 ### 2. Run Installation Script
 
 ```bash
-./install.sh
+./scripts/install.sh
 ```
 
 The script will:
@@ -105,7 +105,7 @@ Create database and update credentials in `web/sites/default/settings.php`
 To update your Aegir installation to the latest version:
 
 ```bash
-./update.sh
+./scripts/update.sh
 ```
 
 The update script will:
@@ -136,9 +136,10 @@ aegir/
 ├── vendor/                # Composer dependencies
 ├── doc/                   # Documentation
 ├── recipes/               # Drupal recipes
+├── scripts/               # Installation and maintenance scripts
+│   ├── install.sh        # Installation script
+│   └── update.sh         # Update script
 ├── composer.json          # Project dependencies
-├── install.sh             # Installation script
-├── update.sh              # Update script
 └── README.md              # This file
 ```
 
@@ -148,11 +149,11 @@ aegir/
 
 Database credentials are stored in:
 - `web/sites/default/settings.php` - Main Drupal configuration
-- `~/.aegir.db.conf` - Backup credentials (created by install.sh)
+- `~/.aegir.db.conf` - Backup credentials (created by scripts/install.sh)
 
 ### Environment Variables
 
-Customize the installation by setting these environment variables before running `install.sh`:
+Customize the installation by setting these environment variables before running `scripts/install.sh`:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
