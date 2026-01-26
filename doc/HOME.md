@@ -24,7 +24,7 @@ Aegir consists of three distinct but tightly integrated components:
 2. **[Backend (aegir-provision)](Backend.md)** - Drush 13 extension automating infrastructure operations
 3. **[Theme (aegir-eldir)](Theme.md)** - Drupal 11 theme providing the hosting management UI
 
-### Target Environment
+### Supported Environment
 
 - **Operating System**: Ubuntu 24.04 LTS (primary support)
 - **PHP**: 8.3+ with required extensions
