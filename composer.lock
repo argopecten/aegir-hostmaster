@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3765e1145bb99a6c305733d020da7acb",
+    "content-hash": "8a7aa187f0071110da934ca8b4cf9256",
     "packages": [
         {
             "name": "argopecten/aegir-eldir",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/argopecten/aegir-eldir.git",
-                "reference": "3aa814f8d6d108d70e07b9141fa24762a553f4cf"
+                "reference": "65c0a20ca96b25b3d11a3185e1181c5d3c97620f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/argopecten/aegir-eldir/zipball/3aa814f8d6d108d70e07b9141fa24762a553f4cf",
-                "reference": "3aa814f8d6d108d70e07b9141fa24762a553f4cf",
+                "url": "https://api.github.com/repos/argopecten/aegir-eldir/zipball/65c0a20ca96b25b3d11a3185e1181c5d3c97620f",
+                "reference": "65c0a20ca96b25b3d11a3185e1181c5d3c97620f",
                 "shasum": ""
             },
             "require": {
@@ -54,7 +54,7 @@
                 "source": "https://github.com/argopecten/aegir-eldir",
                 "docs": "https://github.com/argopecten/aegir-eldir/wiki"
             },
-            "time": "2026-01-24T15:48:10+00:00"
+            "time": "2026-01-26T09:37:36+00:00"
         },
         {
             "name": "argopecten/aegir-hosting",
@@ -62,12 +62,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/argopecten/aegir-hosting.git",
-                "reference": "a007c7d092a7202958b3428740f7485933780602"
+                "reference": "eed5e53df2aa9218c0589db531830623bd52b747"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/argopecten/aegir-hosting/zipball/a007c7d092a7202958b3428740f7485933780602",
-                "reference": "a007c7d092a7202958b3428740f7485933780602",
+                "url": "https://api.github.com/repos/argopecten/aegir-hosting/zipball/eed5e53df2aa9218c0589db531830623bd52b747",
+                "reference": "eed5e53df2aa9218c0589db531830623bd52b747",
                 "shasum": ""
             },
             "require": {
@@ -104,7 +104,7 @@
                 "source": "https://github.com/argopecten/aegir-hosting",
                 "docs": "https://github.com/argopecten/aegir-hosting/wiki"
             },
-            "time": "2026-01-25T11:50:47+00:00"
+            "time": "2026-01-26T09:39:17+00:00"
         },
         {
             "name": "argopecten/aegir-provision",
@@ -112,12 +112,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/argopecten/aegir-provision.git",
-                "reference": "df4d3175b922c1fbeddf48e58901c6c16b56c2e8"
+                "reference": "c29685f88ec1c2086cd086afcf76ab8d6032181c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/argopecten/aegir-provision/zipball/df4d3175b922c1fbeddf48e58901c6c16b56c2e8",
-                "reference": "df4d3175b922c1fbeddf48e58901c6c16b56c2e8",
+                "url": "https://api.github.com/repos/argopecten/aegir-provision/zipball/c29685f88ec1c2086cd086afcf76ab8d6032181c",
+                "reference": "c29685f88ec1c2086cd086afcf76ab8d6032181c",
                 "shasum": ""
             },
             "require": {
@@ -171,7 +171,7 @@
                 "source": "https://github.com/argopecten/aegir-provision",
                 "docs": "https://github.com/argopecten/aegir-provision/wiki"
             },
-            "time": "2026-01-24T16:14:05+00:00"
+            "time": "2026-01-26T09:38:07+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -2132,16 +2132,16 @@
         },
         {
             "name": "laravel/prompts",
-            "version": "v0.3.10",
+            "version": "v0.3.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/prompts.git",
-                "reference": "360ba095ef9f51017473505191fbd4ab73e1cab3"
+                "reference": "dd2a2ed95acacbcccd32fd98dee4c946ae7a7217"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/prompts/zipball/360ba095ef9f51017473505191fbd4ab73e1cab3",
-                "reference": "360ba095ef9f51017473505191fbd4ab73e1cab3",
+                "url": "https://api.github.com/repos/laravel/prompts/zipball/dd2a2ed95acacbcccd32fd98dee4c946ae7a7217",
+                "reference": "dd2a2ed95acacbcccd32fd98dee4c946ae7a7217",
                 "shasum": ""
             },
             "require": {
@@ -2185,9 +2185,9 @@
             "description": "Add beautiful and user-friendly forms to your command-line applications.",
             "support": {
                 "issues": "https://github.com/laravel/prompts/issues",
-                "source": "https://github.com/laravel/prompts/tree/v0.3.10"
+                "source": "https://github.com/laravel/prompts/tree/v0.3.11"
             },
-            "time": "2026-01-13T20:29:29+00:00"
+            "time": "2026-01-27T02:55:06+00:00"
         },
         {
             "name": "league/container",
@@ -2568,7 +2568,7 @@
         },
         {
             "name": "pear/pear-core-minimal",
-            "version": "v1.10.17",
+            "version": "v1.10.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/pear-core-minimal.git",
@@ -9251,16 +9251,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "2.3.1",
+            "version": "2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "16dbf9937da8d4528ceb2145c9c7c0bd29e26374"
+                "reference": "a004701b11273a26cd7955a61d67a7f1e525a45a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/16dbf9937da8d4528ceb2145c9c7c0bd29e26374",
-                "reference": "16dbf9937da8d4528ceb2145c9c7c0bd29e26374",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/a004701b11273a26cd7955a61d67a7f1e525a45a",
+                "reference": "a004701b11273a26cd7955a61d67a7f1e525a45a",
                 "shasum": ""
             },
             "require": {
@@ -9292,9 +9292,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.1"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.2"
             },
-            "time": "2026-01-12T11:33:04+00:00"
+            "time": "2026-01-25T14:56:51+00:00"
         },
         {
             "name": "phpstan/phpstan",
@@ -9786,16 +9786,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.5.49",
+            "version": "11.5.50",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4f1750675ba411dd6c2d5fa8a3cca07f6742020e"
+                "reference": "fdfc727f0fcacfeb8fcb30c7e5da173125b58be3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4f1750675ba411dd6c2d5fa8a3cca07f6742020e",
-                "reference": "4f1750675ba411dd6c2d5fa8a3cca07f6742020e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fdfc727f0fcacfeb8fcb30c7e5da173125b58be3",
+                "reference": "fdfc727f0fcacfeb8fcb30c7e5da173125b58be3",
                 "shasum": ""
             },
             "require": {
@@ -9867,7 +9867,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.49"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.50"
             },
             "funding": [
                 {
@@ -9891,7 +9891,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-24T16:09:28+00:00"
+            "time": "2026-01-27T05:59:18+00:00"
         },
         {
             "name": "ramsey/collection",
@@ -12216,14 +12216,7 @@
             "time": "2026-01-13T14:02:24+00:00"
         }
     ],
-    "aliases": [
-        {
-            "package": "argopecten/aegir-provision",
-            "version": "dev-dev/d11-new",
-            "alias": "11.x-dev",
-            "alias_normalized": "11.9999999.9999999.9999999-dev"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "argopecten/aegir-eldir": 20,
