@@ -230,6 +230,12 @@ Each component has comprehensive documentation:
 - **[Backend Guide](Backend.md)** - Context system, services, Drush commands, operations
 - **[Theme Guide](Theme.md)** - Templates, CSS architecture, JavaScript, components
 
+### For AI Coding Agents
+
+> **AI Assistants**: Start with **[AI-AGENT-GUIDE.md](../.github/AI-AGENT-GUIDE.md)** for complete navigation guidance across all four repositories.
+
+See **[AI-DOCUMENTATION.md](AI-DOCUMENTATION.md)** for an overview of documentation structure for AI agents.
+
 ### Component-Specific AI Instructions
 
 For developers and AI agents, each component has detailed technical instructions:
@@ -241,6 +247,7 @@ For developers and AI agents, each component has detailed technical instructions
 ### Architectural Documentation
 
 - **[Root Architecture](../.github/ARCHITECTURE.md)** - Overarching architecture, integration points, cross-cutting concerns
+- **[AI Agent Guide](../.github/AI-AGENT-GUIDE.md)** - Navigation guide for AI agents across repositories
 - **[Recipes TODO](../.github/TODO-RECIPES.md)** - Drupal Recipes implementation plan
 
 ## Integration Points

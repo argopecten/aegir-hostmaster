@@ -14,14 +14,32 @@
 
 ## Documentation Structure
 
-This project uses **distributed documentation** - each component has its own AI instructions:
+> **📘 New to Aegir AI Documentation?** Read **[AI-AGENT-GUIDE.md](AI-AGENT-GUIDE.md)** first for complete navigation guidance across all repositories.
 
-- **[drush/Commands/contrib/aegir-provision/.github/AI-INSTRUCTIONS.md](drush/Commands/contrib/aegir-provision/.github/AI-INSTRUCTIONS.md)** - Backend/Provision system (contexts, services, Drush commands)
-- **[web/modules/contrib/aegir-hosting/.github/AI-INSTRUCTIONS.md](web/modules/contrib/aegir-hosting/.github/AI-INSTRUCTIONS.md)** - Frontend/Entity system (entities, forms, task queue)
-- **[web/themes/contrib/aegir-eldir/.github/AI-INSTRUCTIONS.md](web/themes/contrib/aegir-eldir/.github/AI-INSTRUCTIONS.md)** - Theme/UI system (templates, CSS, JavaScript)
-- **[TODO-RECIPES.md](.github/TODO-RECIPES.md)** - Drupal Recipes implementation plan (modernize installation)
+This project uses **distributed documentation** across **four standalone Git repositories**:
 
-**This document** covers overarching architecture, integration points, and cross-cutting concerns.
+### Repository Structure
+
+- **[github.com/argopecten/aegir-hostmaster](https://github.com/argopecten/aegir-hostmaster)** - This repo (main Drupal project)
+  - **[.github/ARCHITECTURE.md](ARCHITECTURE.md)** (this file) - Overarching architecture, integration points
+  - **[.github/AI-AGENT-GUIDE.md](AI-AGENT-GUIDE.md)** - **Navigation guide for AI agents across all repos**
+  - **[.github/TODO-RECIPES.md](TODO-RECIPES.md)** - Drupal Recipes implementation plan
+  - **[doc/](../doc/)** - Published documentation (HOME.md, Frontend.md, Backend.md, Theme.md, TODO.md)
+
+- **[github.com/argopecten/aegir-hosting](https://github.com/argopecten/aegir-hosting)** - Frontend component
+  - **[.github/AI-INSTRUCTIONS.md](../web/modules/contrib/aegir-hosting/.github/AI-INSTRUCTIONS.md)** - Entity system, forms, task queue (2000+ lines)
+  - Local path: `web/modules/contrib/aegir-hosting/`
+
+- **[github.com/argopecten/aegir-provision](https://github.com/argopecten/aegir-provision)** - Backend component
+  - **[.github/AI-INSTRUCTIONS.md](../drush/Commands/contrib/aegir-provision/.github/AI-INSTRUCTIONS.md)** - Context system, services, Drush commands (990+ lines)
+  - Local path: `drush/Commands/contrib/aegir-provision/`
+
+- **[github.com/argopecten/aegir-eldir](https://github.com/argopecten/aegir-eldir)** - Theme component
+  - **[.github/AI-INSTRUCTIONS.md](../web/themes/contrib/aegir-eldir/.github/AI-INSTRUCTIONS.md)** - Templates, CSS, JavaScript (1200+ lines)
+  - Local path: `web/themes/contrib/aegir-eldir/`
+
+**This document** covers overarching architecture, integration points, and cross-cutting concerns.  
+**AI-AGENT-GUIDE.md** explains how to navigate between repositories and when to use each documentation file.
 
 
 ## System Architecture

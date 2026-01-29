@@ -167,11 +167,21 @@ Customize the installation by setting these environment variables before running
 
 ## 📖 Documentation
 
+### User Documentation
+
 - **[Home & Architecture](doc/HOME.md)** - System overview and architectural design
 - **[Frontend Guide](doc/Frontend.md)** - Hosting modules, entities, and forms
 - **[Backend Guide](doc/Backend.md)** - Provision system, contexts, and services
 - **[Theme Guide](doc/Theme.md)** - Eldir theme, templates, and styling
 - **[Development TODO](doc/TODO.md)** - Roadmap and future goals
+
+### For AI Coding Agents
+
+> **AI Assistants**: Start with **[.github/AI-AGENT-GUIDE.md](.github/AI-AGENT-GUIDE.md)** for complete navigation guidance
+
+- **[AI Agent Guide](.github/AI-AGENT-GUIDE.md)** - Navigation across all four repositories
+- **[Architecture (AI)](.github/ARCHITECTURE.md)** - Technical architecture for AI agents
+- **[AI Documentation](doc/AI-DOCUMENTATION.md)** - Overview of AI docs structure
 
 ## 🛠️ Development Workflow
 

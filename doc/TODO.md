@@ -2,6 +2,14 @@
 
 This document outlines the development roadmap for Aegir Hostmaster, including planned features, known issues, and future enhancements.
 
+**Recent Updates (January 29, 2026)**:
+- ✅ Implemented automatic task creation on entity save
+- ✅ Implemented task retry logic with exponential backoff
+- ✅ Implemented task cancellation with process killing
+- ✅ Implemented streaming output for real-time logs
+- ✅ Created task queue management UI with auto-refresh
+- ✅ Implemented parallel task execution (when pcntl available)
+
 ## Table of Contents
 
 - [High Priority](#high-priority)
@@ -137,24 +145,7 @@ Separate business logic from entity/form classes into manager services.
 - [x] ServerManager service (completed)
 - [ ] ClientManager service
 - [ ] PackageManager service
-- [ ] TaskManager improvements (priority, dependencies)
-
----
-
-#### 📋 Task Priority and Dependencies
-**Status**: Not Started  
-**Priority**: High  
-**Complexity**: High
-
-Add task scheduling with priorities and dependencies.
-
-**Tasks**:
-- [ ] Add priority field to HostingTask entity
-- [ ] Add dependencies field (references other tasks)
-- [ ] Update queue worker to respect priority
-- [ ] Implement dependency resolution
-- [ ] Add parallel task execution (where safe)
-- [ ] Add task status: waiting, queued, processing, completed, failed
+- [ ] TaskManager improvements (see Medium Priority section for priority/dependencies/parallel execution)
 
 ---
 
@@ -346,6 +337,71 @@ Add support for managing sites on remote servers via SSH.
 - [ ] Support rsync for file operations
 - [ ] Add remote MySQL access
 - [ ] Test multi-server deployments
+
+---
+
+### Task Priority System
+**Status**: Not Started  
+**Priority**: Medium (lowered from High)  
+**Complexity**: Medium
+
+Add priority-based task scheduling to process urgent tasks first.
+
+**Tasks**:
+- [ ] Add priority field to HostingTask entity (integer: 0=low, 50=normal, 100=high)
+- [ ] Update queue worker to sort by priority
+- [ ] Add priority selection in task creation UI
+- [ ] Add priority filters in task list
+- [ ] Document priority levels
+
+**Rationale**: While useful for large-scale deployments, most installations can function adequately with FIFO processing. The complexity of implementation versus immediate benefit doesn't warrant high priority.
+
+---
+
+### Task Dependencies
+**Status**: Not Started  
+**Priority**: Medium (lowered from High)  
+**Complexity**: High
+
+Implement task dependency tracking to chain operations automatically.
+
+**Tasks**:
+- [ ] Add dependencies field to HostingTask entity (entity references)
+- [ ] Implement dependency resolution algorithm
+- [ ] Add circular dependency detection
+- [ ] Update queue worker to check dependencies before execution
+- [ ] Add task status: waiting (for dependencies)
+- [ ] Add dependency visualization in UI
+- [ ] Support dependent task auto-creation (e.g., backup before migrate)
+
+**Rationale**: Task dependencies are valuable for complex workflows but can be worked around with manual sequencing or Drush scripts. Implementation requires careful design to avoid deadlocks and circular dependencies.
+
+---
+
+### Parallel Task Execution
+**Status**: Not Started  
+**Priority**: Medium (lowered from High)  
+**Complexity**: High
+
+Enable concurrent processing of independent tasks for better throughput.
+
+**Tasks**:
+- [ ] Implement task locking mechanism (prevent duplicate execution)
+- [ ] Add conflict detection (tasks affecting same resource)
+- [ ] Utilize `max_threads` configuration from queue info
+- [ ] Implement thread pool management
+- [ ] Add per-queue concurrency limits
+- [ ] Test resource contention scenarios
+- [ ] Add monitoring for concurrent task execution
+
+**Rationale**: While parallel execution significantly improves performance for bulk operations, the current serial processing is sufficient for small-to-medium installations (< 100 sites). Manual workaround exists (running multiple `drush hosting:task-run` processes). The implementation complexity is high due to resource conflict management.
+
+**Workaround**: Run multiple queue workers manually:
+```bash
+drush hosting:task-run &
+drush hosting:task-run &
+drush hosting:task-run &
+```
 
 ---
 
