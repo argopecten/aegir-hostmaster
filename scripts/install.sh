@@ -581,6 +581,29 @@ create_directories() {
     print_success "Directories created"
 }
 
+fix_file_permissions() {
+    print_step "Fixing file permissions..."
+    
+    if [ "$DRY_RUN" = false ]; then
+        # Add aegir user to www-data group so both can manage files
+        if ! groups "${AEGIR_USER}" | grep -q "\bwww-data\b"; then
+            usermod -a -G www-data "${AEGIR_USER}"
+            print_info "Added ${AEGIR_USER} to www-data group"
+        fi
+        
+        # Set proper ownership and permissions for files directory
+        local files_dir="web/sites/${SITE_DIR}/files"
+        if [ -d "${files_dir}" ]; then
+            chown -R "${AEGIR_USER}:www-data" "${files_dir}"
+            chmod -R 775 "${files_dir}"
+            find "${files_dir}" -type f -exec chmod 664 {} \;
+            print_success "File permissions fixed: ${files_dir}"
+        fi
+    else
+        print_info "[DRY RUN] Would fix file permissions"
+    fi
+}
+
 install_drupal() {
     print_step "Installing Drupal as ${AEGIR_USER}..."
     
@@ -779,6 +802,7 @@ run_installation() {
     install_dependencies
     create_directories
     install_drupal
+    fix_file_permissions
     enable_aegir_modules
     clear_cache
     configure_webserver
