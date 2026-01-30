@@ -336,7 +336,94 @@ class HostingTaskQueueWorker extends QueueWorkerBase {
 | `migrate` | Migrate to new platform | `provision-migrate` |
 | `backup` | Backup site | `provision-backup` |
 | `restore` | Restore from backup | `provision-restore` |
+### Cron and Queue Management
 
+**Current Implementation**: Aegir D11 uses Drupal's standard Queue API and cron system.
+
+#### Queue Configuration
+
+**File**: `hosting_task/hosting_task.module`
+
+```php
+function hosting_task_hosting_queue_info() {
+  return [
+    'tasks' => [
+      'label' => t('Tasks'),
+      'description' => t('Execute provisioning tasks.'),
+      'type' => 'serial',
+      'frequency' => 300,        // Run every 5 minutes
+      'items' => 5,              // Process 5 items per run
+      'queue_id' => 'hosting_task',
+      'max_threads' => 6,        // Future: parallel execution
+      'min_threads' => 1,
+      'threshold' => 100,
+      'enabled' => TRUE,
+    ],
+  ];
+}
+```
+
+#### QueueWorker Plugin
+
+**File**: `hosting_task/src/Plugin/QueueWorker/HostingTaskQueueWorker.php`
+
+```php
+/**
+ * @QueueWorker(
+ *   id = "hosting_task",
+ *   title = @Translation("Hosting task queue"),
+ *   cron = {"time" = 60}
+ * )
+ */
+class HostingTaskQueueWorker extends QueueWorkerBase {
+  public function processItem($data): void {
+    $this->taskManager->runTaskId((int) $data['task_id']);
+  }
+}
+```
+
+The `cron = {"time" = 60}` annotation tells Drupal to process this queue for up to 60 seconds during each cron run.
+
+#### Triggering Queue Processing
+
+**Automatic** (via system cron):
+```bash
+# System crontab (runs every 5 minutes)
+*/5 * * * * cd /var/aegir/aegir-2601 && ./vendor/bin/drush cron
+```
+
+**Manual** (immediate processing):
+```bash
+drush hosting:task-run
+```
+
+#### Comparison with Drupal 7 Aegir
+
+| Feature | D7 Aegir | D11 Aegir |
+|---------|----------|----------|
+| Cron trigger | `drush @hostmaster hosting-dispatch` | `drush cron` |
+| Queue system | Custom dispatcher | Drupal Queue API |
+| Multiple queues | Yes (tasks, backups, stats) | Single queue (tasks only) |
+| Queue admin UI | `/admin/hosting/queues` | Not implemented |
+| Per-queue frequency | Configurable | Fixed in annotation |
+| Queue enable/disable | UI toggle | Annotation only |
+| Task retry logic | Basic | Exponential backoff |
+| Streaming output | No | Yes |
+
+**Missing from D11**:
+- Queue management admin UI
+- Multiple queue types (backups, statistics, SSL renewals)
+- Per-queue frequency configuration UI
+- Queue statistics dashboard
+
+**Improvements in D11**:
+- Modern QueueWorker plugin system
+- Built-in queue locking (prevents concurrent runs)
+- Exponential backoff retry logic
+- Real-time streaming task output
+- Task cancellation with process killing
+
+**Future Plans**: See [hosting_task TODO](../web/modules/contrib/aegir-hosting/doc/TODO.md) for planned queue enhancements.
 ## Manager Services
 
 Manager services encapsulate business logic and validation.

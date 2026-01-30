@@ -1,8 +1,14 @@
 # Development Roadmap and TODO
 
-This document outlines the development roadmap for Aegir Hostmaster, including planned features, known issues, and future enhancements.
+This document outlines the overarching development roadmap for Aegir Hostmaster, focusing on system-level features, integrations, and architectural improvements.
+
+**Component-Specific TODOs**:
+- **Backend (Provision)**: See [drush/Commands/contrib/aegir-provision/doc/TODO.md](../drush/Commands/contrib/aegir-provision/doc/TODO.md)
+- **Frontend (Hosting)**: See [web/modules/contrib/aegir-hosting/doc/TODO.md](../web/modules/contrib/aegir-hosting/doc/TODO.md)
+- **Theme (Eldir)**: See [web/themes/contrib/aegir-eldir/doc/TODO.md](../web/themes/contrib/aegir-eldir/doc/TODO.md)
 
 **Recent Updates (January 29, 2026)**:
+- ✅ Organized TODO tasks by component
 - ✅ Implemented automatic task creation on entity save
 - ✅ Implemented task retry logic with exponential backoff
 - ✅ Implemented task cancellation with process killing
@@ -15,256 +21,45 @@ This document outlines the development roadmap for Aegir Hostmaster, including p
 - [High Priority](#high-priority)
 - [Medium Priority](#medium-priority)
 - [Future Enhancements](#future-enhancements)
-- [Known Issues](#known-issues)
 - [Architecture Improvements](#architecture-improvements)
 - [Contributing](#contributing)
 
 ## High Priority
 
-### Backend (Provision)
-
-#### 🔧 PHP-FPM Pool Configuration
-**Status**: Not Started  
-**Priority**: High  
-**Complexity**: Medium
-
-Create per-site PHP-FPM pools for better resource isolation and security.
-
-**Tasks**:
-- [ ] Add PHP-FPM service class
-- [ ] Generate pool configuration per site
-- [ ] Add pool reload to site operations
-- [ ] Configure Unix socket paths
-- [ ] Set per-pool resource limits (memory, max_children)
-- [ ] Update Apache vhost to use site-specific socket
-
-**Implementation Note**: Follow service abstraction pattern used by Apache and MySQL services.
-
----
-
-#### 🔐 Let's Encrypt Integration
-**Status**: Not Started  
+### Testing Infrastructure
 **Priority**: High  
 **Complexity**: High
 
-Implement ACME v2 protocol for automated SSL certificate management.
+Expand test coverage across all components.
 
 **Tasks**:
-- [ ] Create LetsEncryptService class
-- [ ] Implement ACME v2 client
-- [ ] Add DNS challenge support
-- [ ] Implement automatic renewal cron job
-- [ ] Add certificate storage management
-- [ ] Update Apache vhost for HTTPS
-- [ ] Add HTTPS redirect configuration
-
-**Dependencies**: 
-- `acme-php/core` or `php-acme/protocol`
+- [ ] Add unit tests for all manager services
+- [ ] Add functional tests for all entity operations
+- [ ] Add integration tests for backend commands
+- [ ] Add end-to-end tests for common workflows
+- [ ] Set up CI/CD for automated testing
+- [ ] Achieve 80%+ code coverage
 
 ---
 
-#### ✅ Context Schema Validation
-**Status**: Not Started  
+### Documentation
 **Priority**: High  
 **Complexity**: Medium
 
-Add JSON Schema validation for context files to catch configuration errors early.
+Expand and improve documentation.
 
 **Tasks**:
-- [ ] Create JSON Schema definitions for each context type
-- [ ] Add validation service
-- [ ] Validate contexts before operations
-- [ ] Provide helpful error messages
-- [ ] Add `provision-validate` Drush command
-- [ ] Document schema in AI instructions
-
----
-
-#### 🔄 Rollback/Transaction System
-**Status**: Partially Implemented  
-**Priority**: High  
-**Complexity**: High
-
-Improve transaction and rollback support for failed operations.
-
-**Tasks**:
-- [ ] Complete Transaction class implementation
-- [ ] Add rollback hooks to all services
-- [ ] Implement database transaction snapshots
-- [ ] Add file system rollback (restore from temp)
-- [ ] Test failure scenarios
-- [ ] Document rollback behavior
-
----
-
-#### 🐘 PostgreSQL Support
-**Status**: Not Started  
-**Priority**: High  
-**Complexity**: Medium
-
-Add PostgreSQL as an alternative database backend.
-
-**Tasks**:
-- [ ] Create PostgresqlService class
-- [ ] Implement database creation/deletion
-- [ ] Add user/permission management
-- [ ] Update settings.php generation
-- [ ] Add to server configuration options
-- [ ] Test with Drupal PostgreSQL driver
-
----
-
-### Frontend (Hosting)
-
-#### 📝 Complete Entity Field Definitions
-**Status**: In Progress  
-**Priority**: High  
-**Complexity**: Medium
-
-All entity fields should be properly defined using Field API.
-
-**Tasks**:
-- [ ] Audit all entity field definitions
-- [ ] Replace computed fields with proper field types
-- [ ] Add field constraints and validation
-- [ ] Document field schema
-- [ ] Add update hooks for field changes
-
----
-
-#### 🎛️ Manager Services for All Entities
-**Status**: Partially Implemented  
-**Priority**: High  
-**Complexity**: Medium
-
-Separate business logic from entity/form classes into manager services.
-
-**Tasks**:
-- [x] SiteManager service (completed)
-- [x] PlatformManager service (completed)
-- [x] ServerManager service (completed)
-- [ ] ClientManager service
-- [ ] PackageManager service
-- [ ] TaskManager improvements (see Medium Priority section for priority/dependencies/parallel execution)
-
----
-
-#### 👥 Client Entity and Permissions
-**Status**: Basic Implementation  
-**Priority**: High  
-**Complexity**: High
-
-Complete client/organization management with quota and permission system.
-
-**Tasks**:
-- [ ] Add client quotas (max sites, max storage)
-- [ ] Implement quota checking in forms
-- [ ] Add client-specific permissions
-- [ ] Create client dashboard
-- [ ] Add billing integration hooks
-- [ ] Support client groups/organizations
-
----
-
-#### 📦 Package Tracking and Updates
-**Status**: Basic Implementation  
-**Priority**: High  
-**Complexity**: Medium
-
-Track installed packages and notify about available updates.
-
-**Tasks**:
-- [ ] Scan platforms for installed modules/themes
-- [ ] Check drupal.org for security advisories
-- [ ] Display update status on platform pages
-- [ ] Add "Update Available" notifications
-- [ ] Integrate with Composer for updates
-- [ ] Add one-click update task
-
----
-
-### Theme (Eldir)
-
-#### ⚡ Complete JavaScript Implementation
-**Status**: Partially Implemented  
-**Priority**: High  
-**Complexity**: Medium
-
-Finish all planned JavaScript functionality.
-
-**Tasks**:
-- [x] Task queue live updates (basic)
-- [ ] Log filtering and search
-- [ ] Log syntax highlighting
-- [ ] Real-time server status
-- [ ] AJAX form enhancements
-- [ ] Keyboard shortcuts
-
----
-
-#### 📱 Mobile Responsive Optimization
-**Status**: Basic Implementation  
-**Priority**: High  
-**Complexity**: Medium
-
-Improve mobile experience for hosting management.
-
-**Tasks**:
-- [ ] Test all pages on mobile devices
-- [ ] Optimize task log display for mobile
-- [ ] Add mobile navigation menu
-- [ ] Improve form layouts on small screens
-- [ ] Add touch-friendly controls
-- [ ] Test on iOS and Android
-
----
-
-#### 🎨 Theme Suggestions
-**Status**: Not Started  
-**Priority**: Medium  
-**Complexity**: Low
-
-Add theme suggestion hooks for better template customization.
-
-**Tasks**:
-- [ ] Implement `hook_theme_suggestions_HOOK_alter()`
-- [ ] Add suggestions for entity types
-- [ ] Add suggestions for view modes
-- [ ] Document suggestion patterns
-
----
-
-#### ♿ Accessibility Improvements
-**Status**: Basic Implementation  
-**Priority**: High  
-**Complexity**: Medium
-
-Ensure WCAG 2.1 AA compliance throughout.
-
-**Tasks**:
-- [ ] Run automated accessibility tests
-- [ ] Add ARIA labels to all interactive elements
-- [ ] Improve keyboard navigation
-- [ ] Add skip links
-- [ ] Test with screen readers (NVDA, JAWS)
-- [ ] Fix color contrast issues
-
----
-
-#### 🧩 Single Directory Components Migration
-**Status**: Not Started  
-**Priority**: Medium  
-**Complexity**: High
-
-Migrate theme hooks to Single Directory Components (SDC).
-
-**Tasks**:
-- [ ] Create info-table component (started)
-- [ ] Create server-status component
-- [ ] Create task-log component
-- [ ] Create service-badge component
-- [ ] Document component usage patterns
-- [ ] Update module integrations
+- [x] Create main README.md (completed)
+- [x] Create doc/HOME.md (completed)
+- [x] Create doc/Frontend.md (completed)
+- [x] Create doc/Backend.md (completed)
+- [x] Create doc/Theme.md (completed)
+- [x] Create doc/TODO.md (this file, completed)
+- [x] Organize component-specific TODOs (completed)
+- [ ] Add API documentation (PHPDoc)
+- [ ] Create video tutorials
+- [ ] Write migration guides
+- [ ] Add troubleshooting guides
 
 ---
 
@@ -340,102 +135,26 @@ Add support for managing sites on remote servers via SSH.
 
 ---
 
-### Task Priority System
-**Status**: Not Started  
-**Priority**: Medium (lowered from High)  
-**Complexity**: Medium
-
-Add priority-based task scheduling to process urgent tasks first.
-
-**Tasks**:
-- [ ] Add priority field to HostingTask entity (integer: 0=low, 50=normal, 100=high)
-- [ ] Update queue worker to sort by priority
-- [ ] Add priority selection in task creation UI
-- [ ] Add priority filters in task list
-- [ ] Document priority levels
-
-**Rationale**: While useful for large-scale deployments, most installations can function adequately with FIFO processing. The complexity of implementation versus immediate benefit doesn't warrant high priority.
-
----
-
-### Task Dependencies
-**Status**: Not Started  
-**Priority**: Medium (lowered from High)  
-**Complexity**: High
-
-Implement task dependency tracking to chain operations automatically.
-
-**Tasks**:
-- [ ] Add dependencies field to HostingTask entity (entity references)
-- [ ] Implement dependency resolution algorithm
-- [ ] Add circular dependency detection
-- [ ] Update queue worker to check dependencies before execution
-- [ ] Add task status: waiting (for dependencies)
-- [ ] Add dependency visualization in UI
-- [ ] Support dependent task auto-creation (e.g., backup before migrate)
-
-**Rationale**: Task dependencies are valuable for complex workflows but can be worked around with manual sequencing or Drush scripts. Implementation requires careful design to avoid deadlocks and circular dependencies.
-
----
-
-### Parallel Task Execution
-**Status**: Not Started  
-**Priority**: Medium (lowered from High)  
-**Complexity**: High
-
-Enable concurrent processing of independent tasks for better throughput.
-
-**Tasks**:
-- [ ] Implement task locking mechanism (prevent duplicate execution)
-- [ ] Add conflict detection (tasks affecting same resource)
-- [ ] Utilize `max_threads` configuration from queue info
-- [ ] Implement thread pool management
-- [ ] Add per-queue concurrency limits
-- [ ] Test resource contention scenarios
-- [ ] Add monitoring for concurrent task execution
-
-**Rationale**: While parallel execution significantly improves performance for bulk operations, the current serial processing is sufficient for small-to-medium installations (< 100 sites). Manual workaround exists (running multiple `drush hosting:task-run` processes). The implementation complexity is high due to resource conflict management.
-
-**Workaround**: Run multiple queue workers manually:
-```bash
-drush hosting:task-run &
-drush hosting:task-run &
-drush hosting:task-run &
-```
-
----
-
-### Nginx Support
-**Status**: Not Started  
-**Priority**: Medium  
-**Complexity**: Medium
-
-Add Nginx as an alternative to Apache.
-
-**Tasks**:
-- [ ] Create NginxService class
-- [ ] Generate Nginx site configurations
-- [ ] Implement PHP-FPM integration
-- [ ] Add Nginx reload/restart
-- [ ] Update server configuration options
-- [ ] Document Nginx setup
-
----
-
-### Git Integration
+### Task Management Enhancements
 **Status**: Not Started  
 **Priority**: Medium  
 **Complexity**: High
 
-Add Git repository integration for platform deployments.
+Improve task queue management with advanced features.
 
-**Tasks**:
-- [ ] Add Git service class
-- [ ] Support platform deployment from Git
-- [ ] Implement automatic updates from Git
-- [ ] Add webhook support for CI/CD
-- [ ] Support multiple branches
-- [ ] Add rollback to previous commits
+**Overview**:
+- Task Priority System
+- Task Dependencies
+- Parallel Task Execution
+- **Queue Management UI** (high priority, see Frontend TODO)
+- **Multiple Queue Types** (backups, statistics, SSL renewals)
+- **Backup Scheduling** (recurring automated backups)
+
+**Current State**: D11 uses standard Drupal Queue API with single task queue. Tasks process via `drush cron` (runs every 5 minutes). QueueWorker processes up to 60 seconds per cron run, handling 5 tasks.
+
+**D7 Comparison**: D7 had custom queue dispatcher with multiple queues and admin UI at `/admin/hosting/queues`. D11 is simpler and more standards-compliant but lacks some flexibility.
+
+**Detailed Plans**: See [Frontend TODO](../web/modules/contrib/aegir-hosting/doc/TODO.md) for queue management and scheduling tasks.
 
 ---
 
@@ -474,84 +193,6 @@ Add Git repository integration for platform deployments.
 - [ ] CDN integration
 - [ ] Load balancer support
 - [ ] Auto-scaling capabilities
-
-## Known Issues
-
-### Frontend
-
-#### Entity Query Performance
-**Impact**: Medium  
-**Status**: Investigating
-
-Large installations (1000+ sites) may experience slow entity queries.
-
-**Workaround**: Add database indexes on commonly queried fields.
-
-**Solution**: Implement caching layer and optimize queries.
-
----
-
-#### Task Queue Bottleneck
-**Impact**: Medium  
-**Status**: Known Issue
-
-Sequential task processing can be slow for bulk operations.
-
-**Workaround**: Run multiple queue workers in parallel.
-
-**Solution**: Implement parallel task execution for independent tasks.
-
----
-
-### Backend
-
-#### Settings.php Overwrite
-**Impact**: Low  
-**Status**: By Design
-
-Verify tasks regenerate settings.php, overwriting manual changes.
-
-**Workaround**: Use `local.settings.php` for custom settings.
-
-**Solution**: Document settings.php management in AI instructions.
-
----
-
-#### Large File Migrations
-**Impact**: Medium  
-**Status**: Known Issue
-
-Migrating sites with large file directories can timeout.
-
-**Workaround**: Increase PHP execution time limits.
-
-**Solution**: Implement chunked file operations with progress tracking.
-
----
-
-### Theme
-
-#### IE11 Compatibility
-**Impact**: Low  
-**Status**: Won't Fix
-
-Theme uses modern CSS features not supported in IE11.
-
-**Workaround**: None. IE11 is not supported.
-
-**Solution**: Document browser requirements (modern evergreen browsers only).
-
----
-
-#### Dark Mode Support
-**Impact**: Low  
-**Status**: Planned
-
-Theme does not currently support system dark mode preferences.
-
-**Workaround**: None currently.
-
-**Solution**: Add `prefers-color-scheme` media query support.
 
 ---
 
@@ -601,6 +242,7 @@ Expand and improve documentation.
 - [x] Create doc/Backend.md (completed)
 - [x] Create doc/Theme.md (completed)
 - [x] Create doc/TODO.md (this file, completed)
+- [x] Organize component-specific TODOs (completed)
 - [ ] Add API documentation (PHPDoc)
 - [ ] Create video tutorials
 - [ ] Write migration guides
@@ -612,7 +254,10 @@ Expand and improve documentation.
 
 Want to help with any of these tasks? Here's how to get started:
 
-1. **Choose a Task**: Pick an item from the TODO list above
+1. **Choose a Task**: Pick an item from the TODO list above or from component-specific TODOs:
+   - [Backend (Provision) TODO](../drush/Commands/contrib/aegir-provision/doc/TODO.md)
+   - [Frontend (Hosting) TODO](../web/modules/contrib/aegir-hosting/doc/TODO.md)
+   - [Theme (Eldir) TODO](../web/themes/contrib/aegir-eldir/doc/TODO.md)
 2. **Check the AI Instructions**: Review the relevant component's AI instructions:
    - [Backend Instructions](../drush/Commands/contrib/aegir-provision/.github/AI-INSTRUCTIONS.md)
    - [Frontend Instructions](../web/modules/contrib/aegir-hosting/.github/AI-INSTRUCTIONS.md)
@@ -636,6 +281,6 @@ Want to help with any of these tasks? Here's how to get started:
 
 ---
 
-**Last Updated**: January 26, 2026
+**Last Updated**: January 29, 2026
 
 **Questions?** Open an issue on GitHub or join our community chat.
