@@ -3,9 +3,25 @@
 This document outlines the overarching development roadmap for Aegir Hostmaster, focusing on system-level features, integrations, and architectural improvements.
 
 **Component-Specific TODOs**:
-- **Backend (Provision)**: See [drush/Commands/contrib/aegir-provision/doc/TODO.md](../drush/Commands/contrib/aegir-provision/doc/TODO.md)
+- **Backend (Provision)**: See [vendor/argopecten/aegir-provision/doc/roadmap.md](../vendor/argopecten/aegir-provision/doc/roadmap.md)
 - **Frontend (Hosting)**: See [web/modules/contrib/aegir-hosting/doc/TODO.md](../web/modules/contrib/aegir-hosting/doc/TODO.md)
 - **Theme (Eldir)**: See [web/themes/contrib/aegir-eldir/doc/TODO.md](../web/themes/contrib/aegir-eldir/doc/TODO.md)
+
+**Recent Updates (January 31, 2026)**:
+- ✅ Extension/Hook System complete in `argopecten/aegir-provision`:
+  - ✅ Event system: 52 lifecycle events via Symfony EventDispatcher (all 12 operations covered)
+  - ✅ Service plugin system: `HttpServiceInterface`, `DbServiceInterface`, `SslServiceInterface` + `ServiceRegistry`
+  - ✅ Template override system: priority-based `TemplateRenderer` with MD5 caching
+  - ✅ Example implementations: `NginxService`, custom template subscriber
+- ✅ Technical debt refactoring in `argopecten/aegir-provision`:
+  - ✅ Value objects implemented: `DatabaseCredentials`, `ServerPaths`, `ApacheVhostConfig`
+  - ✅ SQL injection fixed: `MySqlService` uses PDO with prepared statements
+  - ✅ Template caching: MD5-based cache with automatic mtime invalidation
+  - ✅ `ProvisionManager` namespace moved from `Aegir\Provision\Provision` → `Aegir\Provision`
+  - ✅ All 16 command imports updated accordingly
+- ❌ **CRITICAL**: Backend still has 0% test coverage (no PHPUnit tests, no CI/CD)
+- ❌ **HIGH**: PHP-FPM per-site pool management not implemented
+- ❌ **HIGH**: Context schema validation not implemented
 
 **Recent Updates (January 29, 2026)**:
 - ✅ Organized TODO tasks by component
@@ -30,15 +46,23 @@ This document outlines the overarching development roadmap for Aegir Hostmaster,
 **Priority**: High  
 **Complexity**: High
 
-Expand test coverage across all components.
+Expand test coverage across all components. **CRITICAL for backend (provision) which currently has 0% coverage.**
 
 **Tasks**:
-- [ ] Add unit tests for all manager services
+- [ ] Add unit tests for all provision core classes (Context, ContextRepository, AliasStore, PlatformRoot, TemplateRenderer)
+- [ ] Add unit tests for all provision managers (InstallationManager, VerificationManager, BackupRestoreManager, MigrationManager, CloneManager, DeleteManager, LockManager)
+- [ ] Add unit tests for all provision services (ApacheService, MySqlService, SettingsWriter, SslManager, ServiceRegistry)
+- [ ] Add command-level tests for all 16 provision Drush commands
+- [ ] Set up docker-compose test environment (Apache 2.4+, MySQL 8.0+, PHP 8.3-FPM)
+- [ ] Add integration tests for full workflows (install, backup/restore, migrate, clone)
+- [ ] Add event system tests (validate/before/after/rollback events for all operations)
+- [ ] Set up CI/CD pipeline (GitHub Actions, PHP 8.3/8.4 matrix, Drush 13.7+)
+- [ ] Configure PHPStan level 8 and PHP_CodeSniffer PSR-12
+- [ ] Add unit tests for frontend manager services
 - [ ] Add functional tests for all entity operations
-- [ ] Add integration tests for backend commands
-- [ ] Add end-to-end tests for common workflows
-- [ ] Set up CI/CD for automated testing
-- [ ] Achieve 80%+ code coverage
+- [ ] Achieve 85%+ code coverage (provision target)
+
+See [vendor/argopecten/aegir-provision/doc/roadmap.md](../vendor/argopecten/aegir-provision/doc/roadmap.md) for detailed testing plan.
 
 ---
 
@@ -63,14 +87,57 @@ Expand and improve documentation.
 
 ---
 
+### PHP-FPM Integration (Backend)
+**Status**: Not Implemented  
+**Priority**: High  
+**Complexity**: High
+
+Add per-site PHP-FPM pool management to the backend. Critical for production deployments with process isolation and resource limits.
+
+**Tasks**:
+- [ ] Create `PhpFpmService` implementing a new `PhpFpmServiceInterface`
+- [ ] Generate per-site pool config templates (`resources/templates/php-fpm/pool.tpl.php`)
+- [ ] Update Apache vhost templates to use per-site FPM socket (`proxy:unix:/run/php/php8.3-fpm-{site}.sock`)
+- [ ] Add pool lifecycle to `InstallationManager` (create on install/enable, remove on disable/delete)
+- [ ] Add FPM pool verification in `VerificationManager`
+- [ ] Configure per-site resource limits (`pm.max_children`, `memory_limit`, `open_basedir`)
+
+---
+
+### Context Schema Validation (Backend)
+**Status**: Not Implemented  
+**Priority**: High  
+**Complexity**: Medium
+
+**Tasks**:
+- [ ] Define JSON Schema for server, platform, and site contexts
+- [ ] Create `ContextValidator` class (`src/Core/ContextValidator.php`)
+- [ ] Validate context data on `provision:save` and `ContextRepository::save()`
+- [ ] Return clear validation error messages per field
+
+---
+
+### Security Hardening (Backend)
+**Status**: Partial  
+**Priority**: High  
+**Complexity**: Medium
+
+**Implemented**: Database credential isolation, SSL management, file permissions (0750/0644), MySQL per-site grants, PDO prepared statements (SQL injection protection).
+
+**Remaining tasks**:
+- [ ] Add security headers to Apache vhost templates (CSP, HSTS, X-Frame-Options, X-Content-Type-Options)
+- [ ] Implement audit logging for all provision operations
+- [ ] Encrypt database passwords in context YAML storage
+- [ ] Add rate limiting / idempotency guards
+- [ ] Add file type and checksum validation for backup restores
+
+---
+
+---
+
 ## Medium Priority
 
 ### Drupal Recipes Implementation
-**Status**: Planned  
-**Priority**: Medium  
-**Complexity**: High
-
-Replace install.sh with Drupal Recipes for better modularity.
 
 **Reference**: See [TODO-RECIPES.md](../.github/TODO-RECIPES.md) for detailed implementation plan.
 
@@ -202,14 +269,19 @@ Improve task queue management with advanced features.
 **Priority**: Medium  
 **Complexity**: High
 
-Improve service abstraction for better testability and extensibility.
+✅ **COMPLETED** (January 31, 2026 in `argopecten/aegir-provision`):
+- ✅ Service interfaces defined: `HttpServiceInterface`, `DbServiceInterface`, `SslServiceInterface`
+- ✅ `ServiceRegistry` implemented for runtime service registration and switching
+- ✅ `ApacheService`, `MySqlService`, `SslManager` implement their respective interfaces
+- ✅ Event system via Symfony EventDispatcher (52 events across all operations)
+- ✅ Template override system with priority-based `TemplateRenderer`
+- ✅ Example `NginxService` provided
 
-**Tasks**:
-- [ ] Define service interfaces
-- [ ] Add service discovery/plugin system
-- [ ] Implement service decorators
-- [ ] Add service events
-- [ ] Improve dependency injection
+**Remaining tasks** (low priority):
+- [ ] Create manager interfaces for better testability
+- [ ] Use typed custom exceptions with error codes instead of generic `\RuntimeException`
+- [ ] Implement command bus pattern for operations (future)
+- [ ] Add middleware pattern for cross-cutting concerns (future)
 
 ---
 
@@ -255,14 +327,14 @@ Expand and improve documentation.
 Want to help with any of these tasks? Here's how to get started:
 
 1. **Choose a Task**: Pick an item from the TODO list above or from component-specific TODOs:
-   - [Backend (Provision) TODO](../drush/Commands/contrib/aegir-provision/doc/TODO.md)
+   - [Backend (Provision) Roadmap](../vendor/argopecten/aegir-provision/doc/roadmap.md)
    - [Frontend (Hosting) TODO](../web/modules/contrib/aegir-hosting/doc/TODO.md)
    - [Theme (Eldir) TODO](../web/themes/contrib/aegir-eldir/doc/TODO.md)
-2. **Check the AI Instructions**: Review the relevant component's AI instructions:
-   - [Backend Instructions](../drush/Commands/contrib/aegir-provision/.github/AI-INSTRUCTIONS.md)
-   - [Frontend Instructions](../web/modules/contrib/aegir-hosting/.github/AI-INSTRUCTIONS.md)
-   - [Theme Instructions](../web/themes/contrib/aegir-eldir/.github/AI-INSTRUCTIONS.md)
-   - [Architecture Overview](../.github/ARCHITECTURE.md)
+2. **Check the Documentation**: Review the relevant component documentation:
+   - [Backend Architecture](Backend.md)
+   - [Frontend Documentation](Frontend.md)
+   - [Architecture Overview](HOME.md)
+   - [Provision D11 Architecture](../vendor/argopecten/aegir-provision/doc/provision-d11.md)
 3. **Follow Best Practices**: Adhere to the development guidelines in each component
 4. **Write Tests**: Include unit/functional tests with your changes
 5. **Update Documentation**: Update relevant documentation files
@@ -281,6 +353,6 @@ Want to help with any of these tasks? Here's how to get started:
 
 ---
 
-**Last Updated**: January 29, 2026
+**Last Updated**: January 31, 2026
 
 **Questions?** Open an issue on GitHub or join our community chat.
