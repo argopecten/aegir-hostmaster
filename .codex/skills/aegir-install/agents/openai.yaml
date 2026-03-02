@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aegir Install"
+  short_description: "Help with Aegir Install tasks"
+  default_prompt: "Use $aegir-install to run a fresh Aegir Hostmaster installation with prerequisite checks."

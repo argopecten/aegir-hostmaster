@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aegir Create Template"
+  short_description: "Help with Aegir Create Template tasks"
+  default_prompt: "Use $aegir-create-template to add an Eldir Twig template and matching preprocess/CSS."

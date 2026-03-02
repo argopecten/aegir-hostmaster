@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aegir Create Drush Command"
+  short_description: "Help with Aegir Create Drush Command tasks"
+  default_prompt: "Use $aegir-create-drush-command to scaffold a new provision:* command with Drush 13 conventions."

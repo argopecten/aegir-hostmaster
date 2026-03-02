@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aegir Module Enable Order"
+  short_description: "Help with Aegir Module Enable Order tasks"
+  default_prompt: "Use $aegir-module-enable-order to enable Aegir modules in the canonical dependency order."

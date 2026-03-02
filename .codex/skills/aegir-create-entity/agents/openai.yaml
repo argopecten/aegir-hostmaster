@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aegir Create Entity"
+  short_description: "Help with Aegir Create Entity tasks"
+  default_prompt: "Use $aegir-create-entity to create a Drupal 11 hosting entity with project conventions."

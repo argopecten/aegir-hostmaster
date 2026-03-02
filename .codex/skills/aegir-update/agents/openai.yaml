@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aegir Update"
+  short_description: "Help with Aegir Update tasks"
+  default_prompt: "Use $aegir-update to perform a safe Aegir update with maintenance mode and validation."

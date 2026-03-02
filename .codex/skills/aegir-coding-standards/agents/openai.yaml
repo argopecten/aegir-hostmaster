@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aegir Coding Standards"
+  short_description: "Help with Aegir Coding Standards tasks"
+  default_prompt: "Use $aegir-coding-standards to apply the correct coding standards before implementing changes."

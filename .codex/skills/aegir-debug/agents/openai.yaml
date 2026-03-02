@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aegir Debug"
+  short_description: "Help with Aegir Debug tasks"
+  default_prompt: "Use $aegir-debug to diagnose task queue, context, and provision command failures."

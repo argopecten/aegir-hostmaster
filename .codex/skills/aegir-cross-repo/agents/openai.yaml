@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aegir Cross Repo"
+  short_description: "Help with Aegir Cross Repo tasks"
+  default_prompt: "Use $aegir-cross-repo to implement a change across hosting, provision, and theme repos."

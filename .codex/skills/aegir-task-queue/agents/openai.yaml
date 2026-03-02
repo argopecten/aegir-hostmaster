@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aegir Task Queue"
+  short_description: "Help with Aegir Task Queue tasks"
+  default_prompt: "Use $aegir-task-queue to add a queue-backed operation from form to provision command."

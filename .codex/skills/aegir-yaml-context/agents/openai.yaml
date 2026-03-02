@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aegir Yaml Context"
+  short_description: "Help with Aegir Yaml Context tasks"
+  default_prompt: "Use $aegir-yaml-context to create or validate Drush YAML context aliases."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aegir GitHub Wiki Sync"
+  short_description: "Help with Aegir GitHub Wiki Sync tasks"
+  default_prompt: "Use $aegir-github-wiki-sync to update docs that sync from doc/ to the GitHub Wiki."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aegir Recipes Development"
+  short_description: "Help with Aegir Recipes Development tasks"
+  default_prompt: "Use $aegir-recipes-development to plan or implement recipe-based installation workflows."
