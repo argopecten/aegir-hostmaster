@@ -1,358 +1,331 @@
-# Development Roadmap and TODO
+# Development Roadmap
 
-This document outlines the overarching development roadmap for Aegir Hostmaster, focusing on system-level features, integrations, and architectural improvements.
+This document is the central roadmap for Aegir Hostmaster. It covers system-level features, cross-component work, and architectural improvements.
 
-**Component-Specific TODOs**:
-- **Backend (Provision)**: See [vendor/argopecten/aegir-provision/doc/roadmap.md](../vendor/argopecten/aegir-provision/doc/roadmap.md)
-- **Frontend (Hosting)**: See [web/modules/contrib/aegir-hosting/doc/TODO.md](../web/modules/contrib/aegir-hosting/doc/TODO.md)
-- **Theme (Eldir)**: See [web/themes/contrib/aegir-eldir/doc/TODO.md](../web/themes/contrib/aegir-eldir/doc/TODO.md)
+**Component-specific roadmaps**:
+- **Backend (Provision)**: [vendor/argopecten/aegir-provision/doc/roadmap.md](../vendor/argopecten/aegir-provision/doc/roadmap.md)
+- **Theme (Eldir)**: [web/themes/contrib/aegir-eldir/doc/TODO.md](../web/themes/contrib/aegir-eldir/doc/TODO.md)
 
-**Recent Updates (January 31, 2026)**:
-- ✅ Extension/Hook System complete in `argopecten/aegir-provision`:
-  - ✅ Event system: 52 lifecycle events via Symfony EventDispatcher (all 12 operations covered)
-  - ✅ Service plugin system: `HttpServiceInterface`, `DbServiceInterface`, `SslServiceInterface` + `ServiceRegistry`
-  - ✅ Template override system: priority-based `TemplateRenderer` with MD5 caching
-  - ✅ Example implementations: `NginxService`, custom template subscriber
-- ✅ Technical debt refactoring in `argopecten/aegir-provision`:
-  - ✅ Value objects implemented: `DatabaseCredentials`, `ServerPaths`, `ApacheVhostConfig`
-  - ✅ SQL injection fixed: `MySqlService` uses PDO with prepared statements
-  - ✅ Template caching: MD5-based cache with automatic mtime invalidation
-  - ✅ `ProvisionManager` namespace moved from `Aegir\Provision\Provision` → `Aegir\Provision`
-  - ✅ All 16 command imports updated accordingly
-- ❌ **CRITICAL**: Backend still has 0% test coverage (no PHPUnit tests, no CI/CD)
-- ❌ **HIGH**: PHP-FPM per-site pool management not implemented
-- ❌ **HIGH**: Context schema validation not implemented
+---
 
-**Recent Updates (January 29, 2026)**:
-- ✅ Organized TODO tasks by component
-- ✅ Implemented automatic task creation on entity save
-- ✅ Implemented task retry logic with exponential backoff
-- ✅ Implemented task cancellation with process killing
-- ✅ Implemented streaming output for real-time logs
-- ✅ Created task queue management UI with auto-refresh
-- ✅ Implemented parallel task execution (when pcntl available)
+## Completed
 
-## Table of Contents
+### Extension System (January 31, 2026) ✅
 
-- [High Priority](#high-priority)
-- [Medium Priority](#medium-priority)
-- [Future Enhancements](#future-enhancements)
-- [Architecture Improvements](#architecture-improvements)
-- [Contributing](#contributing)
+- Event system: 51 lifecycle events via Symfony EventDispatcher (14 operations)
+- Service plugin system: `HttpServiceInterface`, `DbServiceInterface`, `SslServiceInterface`, `CronServiceInterface` + `ServiceRegistry`
+- Template override system: priority-based `TemplateRenderer` with MD5 caching
+
+### Technical Debt Refactoring (January 31, 2026) ✅
+
+- Value objects: `DatabaseCredentials`, `ServerPaths`, `ApacheVhostConfig`, `CronJobConfig`
+- SQL injection fixed: `MySqlService` uses PDO with prepared statements
+- Template caching: MD5-based with mtime invalidation
+- `ProvisionManager` namespace moved to `Aegir\Provision`
+
+### Task Queue (January 29, 2026) ✅
+
+- Automatic task creation on entity save
+- Task retry logic with exponential backoff
+- Task cancellation with process killing
+- Streaming output for real-time logs
+- Task queue management UI with auto-refresh
+
+---
 
 ## High Priority
 
-### Testing Infrastructure
-**Priority**: High  
+### 1. Testing Infrastructure
+
+**Status**: ⏳ Not started — 0% coverage across all components
 **Complexity**: High
 
-Expand test coverage across all components. **CRITICAL for backend (provision) which currently has 0% coverage.**
+| Area | Target |
+|---|---|
+| Provision core classes | Context, ContextRepository, AliasStore, PlatformRoot, TemplateRenderer |
+| Provision managers | All 11 managers + ProvisionManager |
+| Provision services | ApacheService, MySqlService, SettingsWriter, SslManager, SystemCronService |
+| Provision commands | All 17 command classes |
+| Event system | Validate/before/after/rollback for all operations |
+| Frontend services | All manager services + ContextRegistry |
+| Frontend entities | All entity CRUD operations |
+| Integration | Full workflows: install, backup/restore, migrate, clone |
 
-**Tasks**:
-- [ ] Add unit tests for all provision core classes (Context, ContextRepository, AliasStore, PlatformRoot, TemplateRenderer)
-- [ ] Add unit tests for all provision managers (InstallationManager, VerificationManager, BackupRestoreManager, MigrationManager, CloneManager, DeleteManager, LockManager)
-- [ ] Add unit tests for all provision services (ApacheService, MySqlService, SettingsWriter, SslManager, ServiceRegistry)
-- [ ] Add command-level tests for all 16 provision Drush commands
-- [ ] Set up docker-compose test environment (Apache 2.4+, MySQL 8.0+, PHP 8.3-FPM)
-- [ ] Add integration tests for full workflows (install, backup/restore, migrate, clone)
-- [ ] Add event system tests (validate/before/after/rollback events for all operations)
-- [ ] Set up CI/CD pipeline (GitHub Actions, PHP 8.3/8.4 matrix, Drush 13.7+)
-- [ ] Configure PHPStan level 8 and PHP_CodeSniffer PSR-12
-- [ ] Add unit tests for frontend manager services
-- [ ] Add functional tests for all entity operations
-- [ ] Achieve 85%+ code coverage (provision target)
+**Infrastructure needed**:
+- Docker Compose test environment (Apache 2.4+, MySQL 8.0+, PHP 8.3-FPM)
+- GitHub Actions CI/CD (PHP 8.3/8.4 matrix, Drush 13.7+)
+- PHPStan level 8 + PHP_CodeSniffer PSR-12
+- Target: 85%+ code coverage for provision
 
-See [vendor/argopecten/aegir-provision/doc/roadmap.md](../vendor/argopecten/aegir-provision/doc/roadmap.md) for detailed testing plan.
+### 2. PHP-FPM Per-Site Pools
 
----
-
-### Documentation
-**Priority**: High  
-**Complexity**: Medium
-
-Expand and improve documentation.
-
-**Tasks**:
-- [x] Create main README.md (completed)
-- [x] Create doc/HOME.md (completed)
-- [x] Create doc/Frontend.md (completed)
-- [x] Create doc/Backend.md (completed)
-- [x] Create doc/Theme.md (completed)
-- [x] Create doc/TODO.md (this file, completed)
-- [x] Organize component-specific TODOs (completed)
-- [ ] Add API documentation (PHPDoc)
-- [ ] Create video tutorials
-- [ ] Write migration guides
-- [ ] Add troubleshooting guides
-
----
-
-### PHP-FPM Integration (Backend)
-**Status**: Not Implemented  
-**Priority**: High  
+**Status**: ⏳ Not implemented
 **Complexity**: High
 
-Add per-site PHP-FPM pool management to the backend. Critical for production deployments with process isolation and resource limits.
+Per-site PHP-FPM pool management for process isolation and resource limits.
 
-**Tasks**:
-- [ ] Create `PhpFpmService` implementing a new `PhpFpmServiceInterface`
-- [ ] Generate per-site pool config templates (`resources/templates/php-fpm/pool.tpl.php`)
-- [ ] Update Apache vhost templates to use per-site FPM socket (`proxy:unix:/run/php/php8.3-fpm-{site}.sock`)
-- [ ] Add pool lifecycle to `InstallationManager` (create on install/enable, remove on disable/delete)
-- [ ] Add FPM pool verification in `VerificationManager`
-- [ ] Configure per-site resource limits (`pm.max_children`, `memory_limit`, `open_basedir`)
+- [ ] Create `PhpFpmServiceInterface` and `PhpFpmService`
+- [ ] Pool config templates (`resources/templates/php-fpm/pool.tpl.php`)
+- [ ] Update Apache vhost templates for per-site FPM sockets
+- [ ] Pool lifecycle in InstallationManager (create/remove on install/enable/disable/delete)
+- [ ] Pool verification in VerificationManager
+- [ ] Per-site resource limits (`pm.max_children`, `memory_limit`, `open_basedir`)
 
----
+### 3. Context Schema Validation
 
-### Context Schema Validation (Backend)
-**Status**: Not Implemented  
-**Priority**: High  
+**Status**: ⏳ Not implemented
 **Complexity**: Medium
 
-**Tasks**:
-- [ ] Define JSON Schema for server, platform, and site contexts
-- [ ] Create `ContextValidator` class (`src/Core/ContextValidator.php`)
-- [ ] Validate context data on `provision:save` and `ContextRepository::save()`
-- [ ] Return clear validation error messages per field
+- [ ] JSON Schema for server, platform, and site contexts
+- [ ] `ContextValidator` class (`src/Core/ContextValidator.php`)
+- [ ] Validate on `provision:save` and `ContextRepository::save()`
+- [ ] Clear per-field error messages
 
----
+### 4. Git Platform Clone — Architecture Fix
 
-### Security Hardening (Backend)
-**Status**: Partial  
-**Priority**: High  
+**Status**: ⏳ Broken — violates Entity → Task → Queue → Backend principle
 **Complexity**: Medium
 
-**Implemented**: Database credential isolation, SSL management, file permissions (0750/0644), MySQL per-site grants, PDO prepared statements (SQL injection protection).
+`PlatformManager::cloneGitRepository()` runs `exec('git clone')` + `exec('composer install')` synchronously from the frontend HTTP request. This must be moved to the backend via the task queue.
 
-**Remaining tasks**:
-- [ ] Add security headers to Apache vhost templates (CSP, HSTS, X-Frame-Options, X-Content-Type-Options)
-- [ ] Implement audit logging for all provision operations
+**Current (broken)**: Form save → `PlatformManager::cloneGitRepository()` via `exec()` → synchronous clone
+**Correct**: Form save → entity with `platform_type=git` + `git_url` → lifecycle hook → `TaskManager::createTask($platform, 'clone')` → queue → `BackendInvoker` → `provision:clone`
+
+**Problems**: HTTP timeout on large repos, runs as www-data not aegir, no task log, no retry/cancel, bypasses queue.
+
+- [ ] Create `provision:clone` command in backend (git clone + composer install + provision:save + provision:verify)
+- [ ] Add `git_url` property to platform context schema
+- [ ] Remove `exec()` calls from `PlatformManager::cloneGitRepository()`
+- [ ] Form save: create entity only (no clone), queue `clone` task via lifecycle hook
+- [ ] Add `clone` to `PlatformLifecycleHooks` task type handling
+- [ ] Stream git/composer output to task log
+
+**Files**:
+- `hosting_platform/src/Service/PlatformManager.php` — remove `cloneGitRepository()` exec calls
+- `hosting_platform/src/Form/HostingPlatformForm.php` — form save must not clone
+- `hosting_platform/src/Hook/PlatformLifecycleHooks.php` — add clone task creation
+- `vendor/argopecten/aegir-provision/src/Command/` — new `ProvisionCloneCommands.php`
+
+### 5. Frontend Architecture Borderline Cases
+
+**Status**: ⏳ Not started
+**Complexity**: Low–Medium
+
+Issues found during architecture audit (March 2026). Not violations per se, but non-ideal patterns.
+
+- [ ] `PlatformManager::ensurePlatformsDirectoryExists()` — runs `mkdir(/var/aegir/platforms)` in constructor on every service instantiation; move to installer/recipe
+- [ ] `HostingFeaturesForm` → `FeatureManager::applyEnabledFeatures()` — synchronous `moduleInstaller->install()/uninstall()` during HTTP request; could timeout with many modules; consider a task-based approach
+- [ ] `PlatformLockForm` / `PlatformUnlockForm` — direct entity status change without task; non-uniform vs all other operations; acceptable for now but fragile if lock/unlock gains backend side-effects
+- [ ] `PackageDiscovery::discover()` — scans platform filesystem (RecursiveDirectoryIterator + file_get_contents) from frontend; no callers yet (dead code); should be invoked from backend verify task when needed
+
+### 6. Security Hardening
+
+**Status**: Partial (DB credential isolation, SSL, file perms, PDO prepared statements)
+**Complexity**: Medium
+
+- [ ] Security headers in Apache vhost templates (CSP, HSTS, X-Frame-Options)
+- [ ] Audit logging for all provision operations
 - [ ] Encrypt database passwords in context YAML storage
-- [ ] Add rate limiting / idempotency guards
-- [ ] Add file type and checksum validation for backup restores
-
----
+- [ ] Rate limiting / idempotency guards
+- [ ] Backup integrity validation (checksums)
 
 ---
 
 ## Medium Priority
 
-### Drupal Recipes Implementation
+### 7. Drupal Recipes
 
-**Reference**: See [TODO-RECIPES.md](../.github/TODO-RECIPES.md) for detailed implementation plan.
+**Status**: ⏳ Not started
+**Complexity**: Medium
 
-**Tasks**:
-- [ ] Create `aegir-hostmaster` core recipe
+Modernize installation with Drupal Recipes — composable, reusable configuration packages replacing installation profiles.
+
+#### Why Recipes
+
+| Aspect | Recipe | Installation Profile |
+|---|---|---|
+| Apply to existing sites | ✅ Yes | ❌ One-time only |
+| Multiple per site | ✅ Stackable | ❌ One per site |
+| Reapply after update | ✅ Yes | ❌ No |
+| Drupal 11 alignment | ✅ Modern approach | ⚠️ Legacy |
+
+#### Planned Recipes
+
+| Recipe | Location | Purpose |
+|---|---|---|
+| `aegir-hostmaster` | `recipes/aegir-hostmaster/` | Core: install all hosting modules, set permissions, configure theme |
+| `aegir-development` | `recipes/aegir-development/` | Dev tools: devel, webprofiler, verbose logging, no CSS aggregation |
+| `aegir-production` | `recipes/aegir-production/` | Production: CSS/JS aggregation, error hiding, backup settings |
+| `aegir-multiserver` | `recipes/aegir-multiserver/` | Distributed: remote server support, SSH |
+
+#### Base Recipe Structure (`recipes/aegir-hostmaster/recipe.yml`)
+
+```yaml
+name: Aegir Hostmaster
+description: 'Aegir hosting control panel for Drupal 11'
+type: Site configuration
+
+install:
+  - hosting
+  - hosting_site
+  - hosting_platform
+  - hosting_server
+  - hosting_task
+  - hosting_client
+
+config:
+  import:
+    hosting: '*'
+    hosting_site: '*'
+    hosting_platform: '*'
+    hosting_server: '*'
+    hosting_task: '*'
+    hosting_client: '*'
+
+  actions:
+    system.theme:
+      simple_config_update:
+        default: 'eldir'
+        admin: 'eldir'
+
+    user.role.hosting_admin:
+      ensure_exists:
+        id: hosting_admin
+        label: 'Hosting Administrator'
+      grantPermissions:
+        - 'administer hosting'
+        - 'create hosting sites'
+        - 'view hosting tasks'
+```
+
+#### Hybrid Installation Flow
+
+```
+install.sh
+  ├── System checks (PHP, MySQL, Apache)
+  ├── Infrastructure setup (database, directories, permissions)
+  ├── drush site:install minimal
+  ├── drush recipe recipes/aegir-hostmaster    ← Recipes handle Drupal config
+  ├── drush recipe recipes/aegir-{environment} ← Optional environment recipe
+  └── drush hosting:setup                       ← Backend context init
+```
+
+#### Tasks
+
+- [ ] Export current configuration and analyze needs
+- [ ] Create `aegir-hostmaster` recipe with module list, config, permissions
 - [ ] Create `aegir-development` recipe
 - [ ] Create `aegir-production` recipe
 - [ ] Create `aegir-multiserver` recipe
-- [ ] Update installation documentation
-- [ ] Test recipe installation flow
+- [ ] Update `install.sh` to use `drush site:install minimal` + `drush recipe`
+- [ ] Test fresh install, recipe composition, and in-place application
+- [ ] Write recipe documentation in `recipes/README.txt`
 
----
+### 8. Backup Improvements
 
-### Backup Management
-**Status**: Basic Implementation  
-**Priority**: Medium  
+**Status**: Basic implementation exists
 **Complexity**: Medium
 
-Improve backup and restore functionality.
+- [ ] Backup scheduling (daily, weekly, monthly)
+- [ ] Retention policies
+- [ ] Incremental backups
+- [ ] Remote backup storage (S3, FTP)
+- [ ] Backup encryption
+- [ ] Backup browser UI
 
-**Tasks**:
-- [ ] Add backup scheduling (daily, weekly, monthly)
-- [ ] Implement backup retention policies
-- [ ] Add incremental backups
-- [ ] Support remote backup storage (S3, FTP)
-- [ ] Add backup encryption
-- [ ] Create backup browser UI
+### 9. Task Queue Enhancements
 
----
-
-### Migration Tools
-**Status**: Not Started  
-**Priority**: Medium  
+**Status**: Working with standard Drupal Queue API
 **Complexity**: High
 
-Add tools for migrating from Aegir 3.x (Drupal 7) to Aegir 4.x (Drupal 11).
+- [ ] Multiple queue types (tasks, backups, SSL renewals)
+- [ ] Per-queue frequency configuration UI
+- [ ] Queue statistics dashboard
+- [ ] Task priority system
+- [ ] Task dependencies / chaining
 
-**Tasks**:
-- [ ] Create migration Drush commands
-- [ ] Import D7 sites as entities
+### 10. Migration from Aegir 3.x
+
+**Status**: ⏳ Not started
+**Complexity**: High
+
+- [ ] Migration Drush commands
+- [ ] Import D7 sites as D11 entities
 - [ ] Convert D7 contexts to D11 format
-- [ ] Migrate client data
-- [ ] Migrate task history
-- [ ] Document migration process
+- [ ] Migrate client data and task history
+- [ ] Migration guide
 
----
+### 11. Remote Server Support
 
-### Remote Server Support
-**Status**: Not Started  
-**Priority**: Medium  
+**Status**: ⏳ Not started
 **Complexity**: Very High
 
-Add support for managing sites on remote servers via SSH.
-
-**Tasks**:
-- [ ] Add SSH service layer
-- [ ] Implement remote command execution
-- [ ] Add SSH key management
-- [ ] Support rsync for file operations
-- [ ] Add remote MySQL access
-- [ ] Test multi-server deployments
-
----
-
-### Task Management Enhancements
-**Status**: Not Started  
-**Priority**: Medium  
-**Complexity**: High
-
-Improve task queue management with advanced features.
-
-**Overview**:
-- Task Priority System
-- Task Dependencies
-- Parallel Task Execution
-- **Queue Management UI** (high priority, see Frontend TODO)
-- **Multiple Queue Types** (backups, statistics, SSL renewals)
-- **Backup Scheduling** (recurring automated backups)
-
-**Current State**: D11 uses standard Drupal Queue API with single task queue. Tasks process via `drush cron` (runs every 5 minutes). QueueWorker processes up to 60 seconds per cron run, handling 5 tasks.
-
-**D7 Comparison**: D7 had custom queue dispatcher with multiple queues and admin UI at `/admin/hosting/queues`. D11 is simpler and more standards-compliant but lacks some flexibility.
-
-**Detailed Plans**: See [Frontend TODO](../web/modules/contrib/aegir-hosting/doc/TODO.md) for queue management and scheduling tasks.
+- [ ] SSH service layer
+- [ ] Remote command execution
+- [ ] SSH key management
+- [ ] rsync for file operations
+- [ ] Remote MySQL access
 
 ---
 
 ## Future Enhancements
 
-### Multi-tenancy Improvements
-- [ ] Client resource quotas
-- [ ] Client-specific billing integration
-- [ ] Client API access tokens
-- [ ] Client usage statistics dashboard
+### Multi-Tenancy
+- Client resource quotas
+- Client API access tokens
+- Usage statistics dashboard
+- Billing integration
 
-### Monitoring and Alerts
-- [ ] Site uptime monitoring
-- [ ] Disk space alerts
-- [ ] Performance metrics collection
-- [ ] Email notifications for failures
-- [ ] Slack/Discord integration
+### Monitoring & Alerts
+- Site uptime monitoring
+- Disk space alerts
+- Performance metrics
+- Email/Slack notifications
 
-### Advanced Security
-- [ ] Two-factor authentication
-- [ ] Audit logging
-- [ ] Security scan integration
-- [ ] Automated security updates
-- [ ] WAF integration
+### API
+- REST API for all operations
+- GraphQL API
+- Webhook system
+- CI/CD pipeline integration
 
-### API and Integrations
-- [ ] REST API for all operations
-- [ ] GraphQL API
-- [ ] Webhook system
-- [ ] Third-party service integrations
-- [ ] CI/CD pipeline integration
+### Infrastructure
+- Docker/container support
+- Kubernetes integration
+- CDN / load balancer support
+- Auto-scaling
 
-### Platform Features
-- [ ] Docker/container support
-- [ ] Kubernetes integration
-- [ ] CDN integration
-- [ ] Load balancer support
-- [ ] Auto-scaling capabilities
+### Documentation
+- API documentation (PHPDoc)
+- Video tutorials
+- Troubleshooting guides
+- Migration guides
 
 ---
 
 ## Architecture Improvements
 
-### Service Layer Enhancement
-**Priority**: Medium  
-**Complexity**: High
+### Service Layer (Low Priority)
 
-✅ **COMPLETED** (January 31, 2026 in `argopecten/aegir-provision`):
-- ✅ Service interfaces defined: `HttpServiceInterface`, `DbServiceInterface`, `SslServiceInterface`
-- ✅ `ServiceRegistry` implemented for runtime service registration and switching
-- ✅ `ApacheService`, `MySqlService`, `SslManager` implement their respective interfaces
-- ✅ Event system via Symfony EventDispatcher (52 events across all operations)
-- ✅ Template override system with priority-based `TemplateRenderer`
-- ✅ Example `NginxService` provided
-
-**Remaining tasks** (low priority):
-- [ ] Create manager interfaces for better testability
-- [ ] Use typed custom exceptions with error codes instead of generic `\RuntimeException`
-- [ ] Implement command bus pattern for operations (future)
-- [ ] Add middleware pattern for cross-cutting concerns (future)
-
----
-
-### Testing Infrastructure
-**Priority**: High  
-**Complexity**: High
-
-Expand test coverage across all components.
-
-**Tasks**:
-- [ ] Add unit tests for all manager services
-- [ ] Add functional tests for all entity operations
-- [ ] Add integration tests for backend commands
-- [ ] Add end-to-end tests for common workflows
-- [ ] Set up CI/CD for automated testing
-- [ ] Achieve 80%+ code coverage
-
----
-
-### Documentation
-**Priority**: High  
-**Complexity**: Medium
-
-Expand and improve documentation.
-
-**Tasks**:
-- [x] Create main README.md (completed)
-- [x] Create doc/HOME.md (completed)
-- [x] Create doc/Frontend.md (completed)
-- [x] Create doc/Backend.md (completed)
-- [x] Create doc/Theme.md (completed)
-- [x] Create doc/TODO.md (this file, completed)
-- [x] Organize component-specific TODOs (completed)
-- [ ] Add API documentation (PHPDoc)
-- [ ] Create video tutorials
-- [ ] Write migration guides
-- [ ] Add troubleshooting guides
+Extension system is complete. Remaining improvements:
+- Manager interfaces for better testability
+- Typed custom exceptions with error codes
+- Command bus pattern (future)
+- Middleware for cross-cutting concerns (future)
 
 ---
 
 ## Contributing
 
-Want to help with any of these tasks? Here's how to get started:
-
-1. **Choose a Task**: Pick an item from the TODO list above or from component-specific TODOs:
-   - [Backend (Provision) Roadmap](../vendor/argopecten/aegir-provision/doc/roadmap.md)
-   - [Frontend (Hosting) TODO](../web/modules/contrib/aegir-hosting/doc/TODO.md)
-   - [Theme (Eldir) TODO](../web/themes/contrib/aegir-eldir/doc/TODO.md)
-2. **Check the Documentation**: Review the relevant component documentation:
-   - [Backend Architecture](Backend.md)
-   - [Frontend Documentation](Frontend.md)
-   - [Architecture Overview](HOME.md)
-   - [Provision D11 Architecture](../vendor/argopecten/aegir-provision/doc/provision-d11.md)
-3. **Follow Best Practices**: Adhere to the development guidelines in each component
-4. **Write Tests**: Include unit/functional tests with your changes
-5. **Update Documentation**: Update relevant documentation files
-6. **Submit PR**: Open a pull request with your changes
+1. **Pick a task** from this file or a component roadmap
+2. **Read the docs**: [HOME.md](HOME.md), [Backend.md](Backend.md), [Frontend.md](Frontend.md)
+3. **Follow conventions**: PSR-12, `declare(strict_types=1)`, `final` by default
+4. **Write tests** with your changes
+5. **Update docs** and submit a PR
 
 ### Priority Legend
 - **High**: Critical for core functionality or security
 - **Medium**: Important but not blocking
-- **Low**: Nice to have, enhances UX
+- **Future**: Nice to have
 
 ### Complexity Legend
-- **Low**: A few hours of work
-- **Medium**: A few days of work
-- **High**: A week or more of work
-- **Very High**: Multi-week project
-
----
-
-**Last Updated**: January 31, 2026
-
-**Questions?** Open an issue on GitHub or join our community chat.
+- **Low**: Hours · **Medium**: Days · **High**: Week+ · **Very High**: Multi-week

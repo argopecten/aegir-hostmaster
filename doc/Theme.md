@@ -1,110 +1,73 @@
-# Theme Component - Aegir Eldir
+# Theme Component — Aegir Eldir
 
-The **Theme** component provides the visual interface for Aegir. Eldir is a custom Drupal 11 theme designed specifically for hosting management, providing a clean and efficient interface for administrators.
+Eldir is the companion Drupal 11 theme for Aegir Hostmaster. It extends **stable9** (Drupal core's backward-compatible base theme) and provides a hosting-management-optimized interface with custom templates, preprocess functions, and Drupal behaviors.
 
 ## Table of Contents
 
 - [Overview](#overview)
-- [Theme Architecture](#theme-architecture)
+- [Theme Configuration](#theme-configuration)
+- [Directory Structure](#directory-structure)
 - [Template System](#template-system)
 - [CSS Architecture](#css-architecture)
-- [JavaScript Integration](#javascript-integration)
+- [JavaScript](#javascript)
+- [Preprocess Functions](#preprocess-functions)
 - [Responsive Design](#responsive-design)
-- [Single Directory Components](#single-directory-components)
 - [Development Guidelines](#development-guidelines)
 
 ## Overview
 
 **Location**: `web/themes/contrib/aegir-eldir/`
+**Machine name**: `eldir`
+**Base theme**: `false` (standalone)
+**Core requirement**: `^11`
 
-**Purpose**: Provides the user interface theme optimized for Aegir hosting management.
+### At a Glance
 
-**Key Responsibilities**:
-- Visual presentation of hosting entities
-- Task log display and formatting
-- Server status visualization
-- Responsive layout for mobile and desktop
-- Accessibility compliance
+| Metric | Count |
+|---|---|
+| Templates | 99 (20 custom + 79 from stable9) |
+| CSS files | 6 (~3,889 lines) |
+| JS files | 1 (313 lines, 9 behaviors) |
+| Preprocess functions | 19 |
+| Breakpoints | 5 (0/768/1024/1280/1600px) |
+| Regions | 8 |
 
-**Key Principle**: The theme handles **only presentation** - all data logic resides in hosting modules.
+**Key Principle**: The theme handles **only presentation** — all data logic resides in hosting modules.
 
-## Theme Architecture
+**No SDC (Single Directory Components)** are used. Templates use traditional `hook_theme()` registration via `eldir.theme`. SDC adoption is planned (see [eldir doc/TODO.md](../web/themes/contrib/aegir-eldir/doc/TODO.md)). There is no `src/` directory — Eldir has no PHP classes.
 
-### Directory Structure
+## Theme Configuration
 
-```
-aegir-eldir/
-├── css/
-│   ├── base.css              # Reset, typography, base elements
-│   ├── layout.css            # Grid, regions, page structure
-│   ├── components.css        # Buttons, forms, tables, messages
-│   └── aegir.css             # Aegir-specific styling
-├── js/
-│   └── aegir-tasks.js        # Task queue updates, log filtering
-├── templates/
-│   ├── page.html.twig        # Page layout
-│   ├── node--hosting-site.html.twig
-│   ├── node--hosting-platform.html.twig
-│   ├── node--hosting-server.html.twig
-│   └── hosting-task-log.html.twig
-├── components/               # Single Directory Components (SDC)
-│   └── info-table/
-│       ├── info-table.component.yml
-│       ├── info-table.twig
-│       └── info-table.css
-├── eldir.theme               # Preprocess hooks, theme logic
-├── eldir.info.yml            # Theme metadata, regions, libraries
-├── eldir.libraries.yml       # CSS/JS library definitions
-├── eldir.breakpoints.yml     # Responsive breakpoints
-├── logo.svg                  # Aegir logo
-└── screenshot.png            # Theme preview
-```
-
-### Theme Configuration
-
-**File**: `eldir.info.yml`
+### eldir.info.yml
 
 ```yaml
-name: 'Aegir Eldir'
+name: Eldir
 type: theme
-description: 'Official theme for Aegir Hostmaster D11'
-package: Aegir
+description: Companion theme for the Aegir hosting system.
 core_version_requirement: ^11
 base theme: false
-
+libraries:
+  - eldir/global-styling
 regions:
-  header: Header
   navigation: Navigation
-  breadcrumb: Breadcrumb
-  highlighted: Highlighted
+  header: Header
   help: Help
   content: Content
-  sidebar_first: 'Left sidebar'
-  sidebar_second: 'Right sidebar'
+  content_bottom: Content bottom
+  sidebar_first: Sidebar top
+  sidebar_second: Sidebar bottom
   footer: Footer
-
-libraries:
-  - eldir/global
-
-libraries-override:
-  core/drupal.ajax: eldir/aegir-tasks
-
-settings:
-  use_svg_logo: true
-  wide_layout: false
-  main_menu_name: main
-  secondary_menu_name: account
 ```
 
-### Library Definitions
+### eldir.libraries.yml
 
-**File**: `eldir.libraries.yml`
+Single library `global-styling`, attached globally:
 
 ```yaml
-global:
-  version: 1.x
+global-styling:
   css:
     base:
+      css/variables.css: { weight: -100 }
       css/base.css: {}
     layout:
       css/layout.css: {}
@@ -112,780 +75,244 @@ global:
       css/components.css: {}
     theme:
       css/aegir.css: {}
-
-aegir-tasks:
-  version: 1.x
+      css/responsive.css: {}
   js:
-    js/aegir-tasks.js: {}
+    js/eldir.js: {}
   dependencies:
     - core/drupal
-    - core/jquery
-    - core/drupal.ajax
+    - core/once
+```
+
+Dependencies: `core/drupal` (Drupal JS API) and `core/once` (one-time processing).
+
+### eldir.breakpoints.yml
+
+| Breakpoint | Media Query | Weight |
+|---|---|---|
+| `eldir.mobile` | `(min-width: 0px)` | 0 |
+| `eldir.tablet` | `(min-width: 768px)` | 1 |
+| `eldir.desktop` | `(min-width: 1024px)` | 2 |
+| `eldir.wide` | `(min-width: 1280px)` | 3 |
+| `eldir.ultrawide` | `(min-width: 1600px)` | 4 |
+
+All breakpoints define `1x` and `2x` multipliers.
+
+## Directory Structure
+
+```
+aegir-eldir/
+├── eldir.info.yml              # Theme metadata, regions
+├── eldir.libraries.yml         # CSS/JS library definitions
+├── eldir.breakpoints.yml       # Responsive breakpoints
+├── eldir.theme                 # 19 preprocess functions (588 lines)
+├── logo.svg                    # Aegir logo
+├── screenshot.png              # Theme preview
+├── css/
+│   ├── variables.css           # CSS custom properties (284 lines)
+│   ├── base.css                # Reset, typography, base elements (266 lines)
+│   ├── layout.css              # Grid, regions, page structure (329 lines)
+│   ├── components.css          # Buttons, forms, tables, messages (997 lines)
+│   ├── aegir.css               # Aegir-specific hosting styles (1,671 lines)
+│   └── responsive.css          # Media queries (342 lines)
+├── js/
+│   └── eldir.js                # 9 Drupal behaviors (313 lines)
+├── templates/
+│   ├── html.html.twig          # HTML wrapper
+│   ├── page.html.twig          # Default page layout
+│   ├── page--hosting.html.twig # Hosting pages (sidebar layout)
+│   ├── page--user--login.html.twig
+│   ├── page--user--password.html.twig
+│   ├── page--user--register.html.twig
+│   ├── node.html.twig          # Default node template
+│   ├── block.html.twig         # Block template
+│   ├── region.html.twig        # Region wrapper
+│   ├── menu--main.html.twig    # Main navigation menu
+│   ├── menu--secondary.html.twig # Secondary/account menu
+│   ├── hosting-site.html.twig  # Site entity display
+│   ├── hosting-server.html.twig # Server entity display
+│   ├── hosting-task.html.twig  # Task entity display
+│   ├── hosting-queues-table.html.twig # Queue overview table
+│   ├── hosting-service-status-cell.html.twig # Service status in tables
+│   └── components/
+│       ├── hosting-entity-chip.html.twig   # Compact entity reference
+│       ├── hosting-panel.html.twig         # Content panel wrapper
+│       ├── hosting-status-badge.html.twig  # Status indicator badge
+│       └── hosting-task-card.html.twig     # Task card in queue view
+└── doc/
+    ├── Home.md
+    ├── eldir-d11.md
+    └── TODO.md
 ```
 
 ## Template System
 
-### Page Template
+### Page Templates
 
-**File**: `templates/page.html.twig`
-
-```twig
-<div class="layout-container">
-  <header role="banner">
-    {{ page.header }}
-    
-    <div class="site-branding">
-      {% if logo %}
-        <a href="{{ front_page }}" class="site-logo">
-          <img src="{{ logo }}" alt="{{ site_name }}" />
-        </a>
-      {% endif %}
-      <div class="site-name">
-        <a href="{{ front_page }}">{{ site_name }}</a>
-      </div>
-    </div>
-  </header>
-
-  {% if page.navigation %}
-    <nav id="navigation" role="navigation">
-      {{ page.navigation }}
-    </nav>
-  {% endif %}
-
-  {% if page.breadcrumb %}
-    <div class="breadcrumb-wrapper">
-      {{ page.breadcrumb }}
-    </div>
-  {% endif %}
-
-  <main role="main">
-    <a id="main-content" tabindex="-1"></a>
-
-    {% if page.highlighted %}
-      <div class="highlighted">
-        {{ page.highlighted }}
-      </div>
-    {% endif %}
-
-    <div class="layout-content">
-      {% if page.sidebar_first %}
-        <aside class="layout-sidebar-first" role="complementary">
-          {{ page.sidebar_first }}
-        </aside>
-      {% endif %}
-
-      <div class="layout-main">
-        {{ page.content }}
-      </div>
-
-      {% if page.sidebar_second %}
-        <aside class="layout-sidebar-second" role="complementary">
-          {{ page.sidebar_second }}
-        </aside>
-      {% endif %}
-    </div>
-  </main>
-
-  {% if page.footer %}
-    <footer role="contentinfo">
-      {{ page.footer }}
-    </footer>
-  {% endif %}
-</div>
-```
+| Template | Usage |
+|---|---|
+| `page.html.twig` | Default page layout |
+| `page--hosting.html.twig` | Hosting entity pages — includes sidebar navigation |
+| `page--user--login.html.twig` | Login page (centered, minimal) |
+| `page--user--password.html.twig` | Password reset page |
+| `page--user--register.html.twig` | Registration page |
 
 ### Entity Templates
 
-#### Site Node Template
+| Template | Renders |
+|---|---|
+| `hosting-site.html.twig` | Site entity view — domain, platform, status, tasks |
+| `hosting-server.html.twig` | Server entity view — services, status cells |
+| `hosting-task.html.twig` | Task entity view — type, status, log output |
+| `hosting-queues-table.html.twig` | Queue overview — pending tasks per queue |
+| `hosting-service-status-cell.html.twig` | Service status in server table |
 
-**File**: `templates/node--hosting-site.html.twig`
+These are registered via `hook_theme()` in `eldir.theme`, not via entity view builders. The hosting modules provide render arrays; the theme provides the templates.
 
-```twig
-<article class="node node--hosting-site {{ attributes.class }}" role="article">
-  <header class="node__header">
-    <h1 class="node__title">
-      <span class="hosting-icon hosting-icon--site"></span>
-      {{ label }}
-    </h1>
-    
-    <div class="hosting-status hosting-status--{{ content.field_hosting_status }}">
-      {{ content.field_hosting_status }}
-    </div>
-  </header>
+### Component Templates
 
-  <div class="node__content">
-    <div class="hosting-info-grid">
-      <div class="info-section">
-        <h2>Site Information</h2>
-        <dl class="info-list">
-          <dt>Domain</dt>
-          <dd>{{ content.field_hosting_domain }}</dd>
-          
-          <dt>Platform</dt>
-          <dd>{{ content.field_hosting_platform }}</dd>
-          
-          <dt>Database Server</dt>
-          <dd>{{ content.field_hosting_db_server }}</dd>
-          
-          <dt>Install Profile</dt>
-          <dd>{{ content.field_hosting_install_profile }}</dd>
-        </dl>
-      </div>
+Reusable UI fragments in `templates/components/`:
 
-      <div class="info-section">
-        <h2>Recent Tasks</h2>
-        {{ content.recent_tasks }}
-      </div>
-    </div>
-    
-    {% if content.task_log %}
-      <div class="hosting-task-log">
-        {{ content.task_log }}
-      </div>
-    {% endif %}
-  </div>
-</article>
-```
+| Template | Purpose |
+|---|---|
+| `hosting-entity-chip.html.twig` | Compact entity reference (icon + label + status) |
+| `hosting-panel.html.twig` | Titled content panel with optional actions |
+| `hosting-status-badge.html.twig` | Color-coded status indicator |
+| `hosting-task-card.html.twig` | Task summary card for queue views |
 
-#### Task Log Template
-
-**File**: `templates/hosting-task-log.html.twig`
-
-```twig
-<div class="hosting-task-log {{ attributes.class }}">
-  <div class="task-log-header">
-    <h3>{{ task_type }} Task</h3>
-    <span class="task-status task-status--{{ status }}">
-      {{ status }}
-    </span>
-  </div>
-  
-  <div class="task-log-meta">
-    <span class="task-time">{{ created|date('Y-m-d H:i:s') }}</span>
-    <span class="task-duration">{{ duration }}</span>
-  </div>
-  
-  <div class="task-log-content">
-    <div class="log-controls">
-      <button class="btn-filter" data-filter="error">Errors Only</button>
-      <button class="btn-filter" data-filter="warning">Warnings</button>
-      <button class="btn-filter active" data-filter="all">All</button>
-    </div>
-    
-    <pre class="log-output">{{ log_output }}</pre>
-  </div>
-</div>
-```
+These are render-array-based components, not SDC. Called from preprocess functions and entity view builders.
 
 ## CSS Architecture
 
-### Base Styles
-
-**File**: `css/base.css`
-
-```css
-/* Reset and Base Elements */
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #333;
-  background: #f5f5f5;
-  margin: 0;
-  padding: 0;
-}
-
-a {
-  color: #0073aa;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #005177;
-  text-decoration: underline;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  margin: 0 0 1rem;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-code, pre {
-  font-family: "Monaco", "Menlo", "Courier New", monospace;
-  font-size: 0.9em;
-}
-```
-
-### Layout Styles
-
-**File**: `css/layout.css`
-
-```css
-/* Page Layout */
-.layout-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-header[role="banner"] {
-  background: #23282d;
-  color: #fff;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.site-branding {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.site-logo img {
-  height: 40px;
-  width: auto;
-}
-
-main[role="main"] {
-  flex: 1;
-  padding: 2rem;
-  max-width: 1400px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.layout-content {
-  display: grid;
-  grid-template-columns: 250px 1fr 250px;
-  gap: 2rem;
-}
-
-.layout-content.no-sidebars {
-  grid-template-columns: 1fr;
-}
-
-footer[role="contentinfo"] {
-  background: #23282d;
-  color: #fff;
-  padding: 1rem 2rem;
-  text-align: center;
-}
-```
-
-### Component Styles
-
-**File**: `css/components.css`
-
-```css
-/* Navigation */
-#navigation {
-  background: #32373c;
-  padding: 0;
-}
-
-#main-menu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-
-#main-menu li {
-  margin: 0;
-}
-
-#main-menu a {
-  display: block;
-  padding: 0.75rem 1.5rem;
-  color: #fff;
-  text-decoration: none;
-}
-
-#main-menu a:hover,
-#main-menu a.is-active {
-  background: #0073aa;
-}
-
-/* Buttons */
-.button,
-.btn,
-input[type="submit"] {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background: #0073aa;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.button:hover,
-.btn:hover {
-  background: #005177;
-}
-
-.button--danger {
-  background: #dc3232;
-}
-
-.button--danger:hover {
-  background: #a00;
-}
-
-/* Tables */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-thead th {
-  background: #f7f7f7;
-  border-bottom: 2px solid #ddd;
-  padding: 0.75rem;
-  text-align: left;
-  font-weight: 600;
-}
-
-tbody td {
-  padding: 0.75rem;
-  border-bottom: 1px solid #eee;
-}
-
-tbody tr:hover {
-  background: #f9f9f9;
-}
-
-/* Messages */
-.messages {
-  padding: 1rem;
-  margin: 1rem 0;
-  border-left: 4px solid;
-  border-radius: 4px;
-}
-
-.messages.error {
-  background: #fef6f6;
-  border-color: #dc3232;
-  color: #a00;
-}
-
-.messages.warning {
-  background: #fffbf0;
-  border-color: #ffb900;
-  color: #876100;
-}
-
-.messages.status {
-  background: #f0f9f6;
-  border-color: #46b450;
-  color: #0a5f20;
-}
-```
-
-### Aegir-Specific Styles
-
-**File**: `css/aegir.css`
-
-```css
-/* Hosting Entity Styles */
-.ntype-site,
-.ntype-platform,
-.ntype-server {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.hosting-icon {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  background-size: contain;
-  vertical-align: middle;
-  margin-right: 0.5rem;
-}
-
-.hosting-icon--site {
-  background-image: url('../images/site-icon.svg');
-}
-
-.hosting-icon--platform {
-  background-image: url('../images/platform-icon.svg');
-}
-
-.hosting-icon--server {
-  background-image: url('../images/server-icon.svg');
-}
-
-/* Status Indicators */
-.hosting-status {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.hosting-status--enabled {
-  background: #d4edda;
-  color: #155724;
-}
-
-.hosting-status--disabled {
-  background: #f8d7da;
-  color: #721c24;
-}
-
-.hosting-status--deleted {
-  background: #d1d1d1;
-  color: #666;
-}
-
-/* Task Log Display */
-.hosting-task-log {
-  background: #1e1e1e;
-  color: #d4d4d4;
-  padding: 1rem;
-  border-radius: 4px;
-  margin: 1rem 0;
-}
-
-.log-output {
-  font-family: "Monaco", "Menlo", monospace;
-  font-size: 0.85rem;
-  line-height: 1.4;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  margin: 0;
-}
-
-.log-output .log-error {
-  color: #f48771;
-}
-
-.log-output .log-warning {
-  color: #dcdcaa;
-}
-
-.log-output .log-success {
-  color: #4ec9b0;
-}
-
-/* Info Grid */
-.hosting-info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin: 2rem 0;
-}
-
-.info-section {
-  background: #f9f9f9;
-  padding: 1.5rem;
-  border-radius: 4px;
-}
-
-.info-list {
-  margin: 0;
-}
-
-.info-list dt {
-  font-weight: 600;
-  color: #666;
-  margin-top: 0.75rem;
-}
-
-.info-list dd {
-  margin: 0.25rem 0 0 0;
-  padding-left: 1rem;
-}
-```
-
-## JavaScript Integration
-
-### Task Updates
-
-**File**: `js/aegir-tasks.js`
-
-```javascript
-(function ($, Drupal, drupalSettings) {
-  'use strict';
-
-  /**
-   * Live task log updates.
-   */
-  Drupal.behaviors.aegirTaskUpdates = {
-    attach: function (context, settings) {
-      $('.hosting-task-log', context).once('aegir-task-update').each(function () {
-        var $log = $(this);
-        var taskId = $log.data('task-id');
-        
-        // Poll for updates every 5 seconds
-        var pollInterval = setInterval(function () {
-          $.ajax({
-            url: '/aegir/task/' + taskId + '/log',
-            success: function (data) {
-              if (data.status === 'completed' || data.status === 'error') {
-                clearInterval(pollInterval);
-              }
-              
-              // Update log output
-              $log.find('.log-output').html(data.log);
-              
-              // Update status
-              $log.find('.task-status')
-                .removeClass()
-                .addClass('task-status task-status--' + data.status)
-                .text(data.status);
-            }
-          });
-        }, 5000);
-      });
-    }
-  };
-
-  /**
-   * Log filtering.
-   */
-  Drupal.behaviors.aegirLogFilters = {
-    attach: function (context, settings) {
-      $('.log-controls .btn-filter', context).once('log-filter').on('click', function (e) {
-        e.preventDefault();
-        
-        var $btn = $(this);
-        var filter = $btn.data('filter');
-        var $output = $btn.closest('.task-log-content').find('.log-output');
-        
-        // Update active button
-        $btn.siblings().removeClass('active');
-        $btn.addClass('active');
-        
-        // Apply filter
-        $output.removeClass('filter-error filter-warning').addClass('filter-' + filter);
-      });
-    }
-  };
-
-})(jQuery, Drupal, drupalSettings);
-```
+### Layer Structure
+
+CSS follows Drupal's SMACSS-inspired library weight system:
+
+| Layer | File | Weight | Purpose | Lines |
+|---|---|---|---|---|
+| Base | `variables.css` | -100 | CSS custom properties (colors, spacing, fonts) | 284 |
+| Base | `base.css` | default | Reset, typography, base HTML elements | 266 |
+| Layout | `layout.css` | layout | Grid, regions, page structure | 329 |
+| Component | `components.css` | component | Buttons, forms, tables, messages, navigation | 997 |
+| Theme | `aegir.css` | theme | Aegir-specific hosting entity styles | 1,671 |
+| Theme | `responsive.css` | theme | Media queries for all breakpoints | 342 |
+
+### CSS Custom Properties
+
+`variables.css` defines design tokens — colors, spacing, typography, and component-specific values. All other CSS files reference these variables for consistency.
+
+### Key CSS Classes
+
+| Pattern | Purpose |
+|---|---|
+| `.hosting-site`, `.hosting-server`, `.hosting-task` | Entity type containers |
+| `.hosting-status--enabled`, `.hosting-status--disabled` | Status indicators |
+| `.hosting-panel` | Content panel |
+| `.hosting-entity-chip` | Compact entity reference |
+| `.hosting-status-badge` | Status badge |
+| `.hosting-task-card` | Task card |
+
+## JavaScript
+
+### eldir.js
+
+Single file with 9 `Drupal.behaviors`:
+
+| Behavior | Purpose |
+|---|---|
+| `eldirSmoothScroll` | Smooth scrolling for anchor links |
+| `eldirResponsiveTables` | Responsive table wrapping |
+| `eldirMobileNav` | Mobile navigation toggle |
+| `eldirFormEnhancement` | Form UX improvements |
+| `eldirAutoExpandTextarea` | Auto-expanding textareas |
+| `eldirLiveTaskStatus` | Live task status polling/updates |
+| `eldirCollapsible` | Collapsible sections |
+| `eldirActiveTrail` | Active menu trail highlighting |
+| `eldirCopyCode` | Copy-to-clipboard for code blocks |
+
+All behaviors use `core/once` for idempotent attachment and follow the `Drupal.behaviors.{name} = { attach: function(context, settings) {} }` pattern.
+
+## Preprocess Functions
+
+`eldir.theme` (588 lines) contains 19 preprocess functions:
+
+### Core Preprocess
+
+| Function | Purpose |
+|---|---|
+| `eldir_preprocess_html()` | Body classes, page-level attributes |
+| `eldir_preprocess_page()` | Page variables, sidebar logic, branding |
+| `eldir_preprocess_node()` | Node type classes, view mode handling |
+
+### Entity Preprocess
+
+| Function | Purpose |
+|---|---|
+| `eldir_preprocess_entity__hosting_server()` | Server entity variables |
+| `eldir_preprocess_entity__hosting_site()` | Site entity variables |
+| `eldir_preprocess_entity__hosting_client()` | Client entity variables |
+| `eldir_preprocess_entity__hosting_task()` | Task entity variables |
+| `eldir_preprocess_hosting_site()` | Site template variables |
+| `eldir_preprocess_hosting_platform()` | Platform template variables |
+| `eldir_preprocess_hosting_server()` | Server template variables |
+
+### UI Element Preprocess
+
+| Function | Purpose |
+|---|---|
+| `eldir_preprocess_menu__main()` | Main menu customization |
+| `eldir_preprocess_menu_local_tasks()` | Local tasks (tabs) |
+| `eldir_preprocess_table()` | Table enhancements |
+| `eldir_preprocess_form()` | Form wrapper classes |
+| `eldir_preprocess_form_element()` | Form element styling |
+
+### Component Preprocess
+
+| Function | Purpose |
+|---|---|
+| `eldir_preprocess_hosting_status_badge()` | Badge color/label from status |
+| `eldir_preprocess_hosting_panel()` | Panel title/content/actions |
+| `eldir_preprocess_hosting_task_card()` | Task card data extraction |
+| `eldir_preprocess_hosting_entity_chip()` | Entity chip label/icon/link |
 
 ## Responsive Design
 
-### Breakpoints
+Mobile-first approach using the 5 breakpoints defined in `eldir.breakpoints.yml`.
 
-**File**: `eldir.breakpoints.yml`
+### Key Responsive Patterns
 
-```yaml
-eldir.mobile:
-  label: Mobile
-  mediaQuery: '(max-width: 767px)'
-  weight: 0
-  multipliers:
-    - 1x
+- **Navigation**: collapses to hamburger menu below tablet (768px)
+- **Layout**: single column on mobile, sidebar layout on desktop (1024px+)
+- **Tables**: horizontal scroll wrapper on small screens
+- **Forms**: full-width inputs on mobile, inline labels on desktop
 
-eldir.tablet:
-  label: Tablet
-  mediaQuery: '(min-width: 768px) and (max-width: 1023px)'
-  weight: 1
-  multipliers:
-    - 1x
-
-eldir.desktop:
-  label: Desktop
-  mediaQuery: '(min-width: 1024px)'
-  weight: 2
-  multipliers:
-    - 1x
-```
-
-### Responsive CSS
-
-```css
-/* Mobile First Approach */
-@media (max-width: 767px) {
-  .layout-content {
-    grid-template-columns: 1fr;
-  }
-  
-  .layout-sidebar-first,
-  .layout-sidebar-second {
-    display: none;
-  }
-  
-  #main-menu {
-    flex-direction: column;
-  }
-  
-  .hosting-info-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1023px) {
-  .layout-content {
-    grid-template-columns: 200px 1fr;
-  }
-  
-  .layout-sidebar-second {
-    display: none;
-  }
-}
-```
-
-## Single Directory Components
-
-### Component Structure
-
-**Directory**: `components/info-table/`
-
-**Component Definition** (`info-table.component.yml`):
-```yaml
-'$schema': https://git.drupalcode.org/project/drupal/-/raw/11.x/core/modules/sdc/src/ComponentSchema.json
-name: Info Table
-description: 'Displays structured property listings for Aegir entities'
-props:
-  type: object
-  properties:
-    title:
-      type: string
-      title: Table Title
-    items:
-      type: array
-      title: Table Items
-      items:
-        type: object
-        properties:
-          title:
-            type: string
-          value:
-            type: string
-    collapsible:
-      type: boolean
-      title: Is Collapsible
-      default: false
-```
-
-**Template** (`info-table.twig`):
-```twig
-<div class="info-table {{ collapsible ? 'info-table--collapsible' : '' }}">
-  {% if title %}
-    <h3 class="info-table__title">{{ title }}</h3>
-  {% endif %}
-  
-  <dl class="info-table__list">
-    {% for item in items %}
-      <div class="info-table__item">
-        <dt class="info-table__label">{{ item.title }}</dt>
-        <dd class="info-table__value">{{ item.value }}</dd>
-      </div>
-    {% endfor %}
-  </dl>
-</div>
-```
-
-**Usage in Module**:
-```php
-$build['info'] = [
-  '#type' => 'component',
-  '#component' => 'eldir:info-table',
-  '#props' => [
-    'title' => 'Site Information',
-    'items' => [
-      ['title' => 'Domain', 'value' => 'example.com'],
-      ['title' => 'Platform', 'value' => 'Drupal 11'],
-      ['title' => 'Status', 'value' => 'Enabled'],
-    ],
-    'collapsible' => TRUE,
-  ],
-];
-```
+All responsive styles are in `responsive.css`, using `@media` queries matching the breakpoint values.
 
 ## Development Guidelines
 
-### Theme Development
+### Key Rules
 
-**DO**:
-- ✓ Use preprocess functions for data preparation
-- ✓ Use render arrays from modules
-- ✓ Follow Twig best practices
-- ✓ Use CSS classes for module integration
-- ✓ Support dark mode (future)
+- No PHP classes — all logic is in `eldir.theme` preprocess functions
+- No SDC yet — templates use traditional `hook_theme()` registration
+- Base theme is `false` (standalone, D11 pattern) — 79 stable9 templates are copied into the theme for full markup ownership
+- All JavaScript uses `Drupal.behaviors` with `core/once`
+- CSS custom properties in `variables.css` — use them instead of hardcoded values
+- Hosting-specific templates are entity-based, not node-type-based
+- SVG icon sprite path is resolved via `hosting.icon_provider` service — modules must never hardcode the theme name
 
-**DON'T**:
-- ✗ Implement business logic in theme
-- ✗ Query entities directly
-- ✗ Modify entity data
-- ✗ Use inline styles
-- ✗ Hardcode URLs or paths
+### Adding a New Template
 
-### Preprocess Functions
+1. Create `.html.twig` file in `templates/` (or `templates/components/`)
+2. Register via `hook_theme()` in `eldir.theme`
+3. Add preprocess function `eldir_preprocess_{template_name}()`
+4. Ensure the hosting module provides the render array
 
-**File**: `eldir.theme`
+### Styling Convention
 
-```php
-/**
- * Implements hook_preprocess_node().
- */
-function eldir_preprocess_node(&$variables) {
-  $node = $variables['node'];
-  
-  // Add entity type class
-  $variables['attributes']['class'][] = 'ntype-' . $node->bundle();
-  
-  // Add status class for hosting entities
-  if ($node->hasField('field_hosting_status')) {
-    $status = $node->get('field_hosting_status')->value;
-    $variables['attributes']['class'][] = 'hosting-status--' . $status;
-  }
-}
-
-/**
- * Implements hook_preprocess_page().
- */
-function eldir_preprocess_page(&$variables) {
-  // Add current route to body class
-  $route = \Drupal::routeMatch()->getRouteName();
-  $variables['attributes']['class'][] = 'route-' . str_replace('.', '-', $route);
-}
-```
-
-### CSS Organization
-
-**Order of Specificity**:
-1. Base (elements, reset)
-2. Layout (grid, regions)
-3. Components (buttons, forms, tables)
-4. Theme-specific (Aegir entities)
-5. Utilities (helpers, overrides)
-
-### Accessibility
-
-**WCAG 2.1 AA Compliance**:
-- ✓ Color contrast ratio ≥ 4.5:1
-- ✓ Keyboard navigation support
-- ✓ ARIA labels on interactive elements
-- ✓ Focus indicators
-- ✓ Screen reader friendly markup
-
-## Next Steps
-
-- **[Frontend Documentation](Frontend.md)** - Learn about hosting modules
-- **[Backend Documentation](Backend.md)** - Understand the provision system
-- **[Architecture Overview](HOME.md)** - Return to main documentation
+- Use existing CSS custom properties from `variables.css`
+- Follow SMACSS layers: base → layout → component → theme
+- Prefix all Aegir classes with `hosting-`
+- Responsive styles go in `responsive.css`
 
 ---
 
-**Questions?** Check the [theme AI instructions](../web/themes/contrib/aegir-eldir/.github/AI-INSTRUCTIONS.md) for detailed technical guidance.
+**Related**: [HOME.md](HOME.md) · [Frontend.md](Frontend.md) · [Backend.md](Backend.md) · [eldir-d11.md](../web/themes/contrib/aegir-eldir/doc/eldir-d11.md)

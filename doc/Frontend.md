@@ -1,6 +1,6 @@
-# Frontend Component - Aegir Hosting Modules
+# Frontend Component — Aegir Hosting Modules
 
-The **Frontend** component provides the Drupal 11 interface for Aegir. It consists of a suite of modules that handle entity management, forms, task queuing, and user interactions.
+The Frontend component provides the Drupal 11 interface for Aegir. It consists of a suite of modules that handle entity management, forms, task queuing, context synchronization, and backend communication.
 
 ## Table of Contents
 
@@ -8,753 +8,320 @@ The **Frontend** component provides the Drupal 11 interface for Aegir. It consis
 - [Module Structure](#module-structure)
 - [Entity Architecture](#entity-architecture)
 - [Task Queue System](#task-queue-system)
-- [Manager Services](#manager-services)
-- [Forms and Validation](#forms-and-validation)
+- [Services](#services)
+- [Forms](#forms)
 - [Context Registry](#context-registry)
+- [Plugin System](#plugin-system)
 - [Drush Commands](#drush-commands)
 - [Development Guidelines](#development-guidelines)
 
 ## Overview
 
 **Location**: `web/modules/contrib/aegir-hosting/`
+**Namespace**: `Drupal\hosting` (core), `Drupal\hosting_{module}` (submodules)
 
-**Purpose**: Provides the Drupal-based frontend interface for managing hosting infrastructure.
+### At a Glance
 
-**Key Responsibilities**:
-- Entity definitions (sites, platforms, servers)
-- Forms and validation
-- Task queue management
-- Backend communication
-- Access control
-- User interface integration
+| Metric | Count |
+|---|---|
+| Submodules | 8 (+ parent `hosting`) |
+| Entity types | 12 |
+| Form classes | 25 |
+| Registered services | ~33 |
+| `.services.yml` files | 11 |
+| Plugin managers | 2 |
+| Drush command classes | 3 |
 
 ## Module Structure
 
 ### Core Module: `hosting`
 
-**Purpose**: Base module providing core functionality
+Base module providing shared services, the HostingContext entity, and administrative forms.
 
-**Key Components**:
-- `HostingContext` entity - Entity ↔ Context registry
-- `ContextRegistry` service - Context synchronization
-- `BackendInvoker` service - Drush command execution
-- `QueueDispatcher` service - Task queue orchestration
-- `HostingCommands` - Drush commands (`hosting:*`)
-- `HostingSettingsForm` - Admin settings
+**Key classes**:
+- `src/Entity/HostingContext.php` — Entity ↔ context name mapping
+- `src/Entity/HostingContextInterface.php` — Shared interface
+- `src/Service/ContextRegistry.php` — Bidirectional entity ↔ context sync
+- `src/Service/BackendInvoker.php` — Drush command execution
+- `src/Service/QueueDispatcher.php` — Task queue orchestration
+- `src/Form/HostingSettingsForm.php` — Admin settings
+- `src/Form/HostingFeaturesForm.php` — Feature/module management
+- `src/Form/HostingQueuesForm.php` — Queue configuration
 
-**Services**:
-```yaml
-# hosting.services.yml
-services:
-  hosting.context_registry:
-    class: Drupal\hosting\Service\ContextRegistry
-    arguments: ['@entity_type.manager', '@file_system', '@logger.factory']
-  
-  hosting.backend_invoker:
-    class: Drupal\hosting\Service\BackendInvoker
-    arguments: ['@logger.factory']
-  
-  hosting.queue_dispatcher:
-    class: Drupal\hosting\Service\QueueDispatcher
-    arguments: ['@queue', '@entity_type.manager']
-```
+### Submodules
 
-### Sub-modules
+Submodules are **peer directories** (not nested under `modules/`):
 
-#### `hosting_site`
-**Purpose**: Site entity and management
+| Module | Directory | Purpose |
+|---|---|---|
+| `hosting_site` | `hosting_site/` | Site entity, forms, domain validation, lifecycle tasks |
+| `hosting_platform` | `hosting_platform/` | Platform entity, path management, verification |
+| `hosting_server` | `hosting_server/` | Server entity, service instances, plugin system |
+| `hosting_task` | `hosting_task/` | Task entity, queue worker, task logging |
+| `hosting_client` | `hosting_client/` | Client entity, multi-tenancy, access control |
+| `hosting_package` | `hosting_package/` | Package tracking, version discovery |
+| `hosting_db_server` | `hosting_db_server/` | Database server resolution, credentials |
+| `hosting_web_server` | `hosting_web_server/` | Web server configuration |
 
-**Key Files**:
-- `src/Entity/HostingSite.php` - Site entity definition
-- `src/Form/HostingSiteForm.php` - Site create/edit form
-- `src/Service/SiteManager.php` - Business logic service
-- `hosting_site.routing.yml` - Route definitions
-- `hosting_site.links.task.yml` - Entity operation links
-
-**Features**:
-- Site creation and management
-- Domain validation
-- Platform association
-- Database server configuration
-- Clone and migrate operations
-
-#### `hosting_platform`
-**Purpose**: Platform entity and management
-
-**Key Files**:
-- `src/Entity/HostingPlatform.php` - Platform entity definition
-- `src/Form/HostingPlatformForm.php` - Platform create/edit form
-- `src/Service/PlatformManager.php` - Business logic service
-
-**Features**:
-- Drupal distribution tracking
-- File system path management
-- Platform verification
-- Site listing
-- Update status monitoring
-
-#### `hosting_server`
-**Purpose**: Server entity and service management
-
-**Key Files**:
-- `src/Entity/HostingServer.php` - Server entity definition
-- `src/Entity/HostingServiceInstance.php` - Service configuration
-- `src/Form/HostingServerForm.php` - Server create/edit form
-- `src/Service/ServerManager.php` - Business logic service
-
-**Features**:
-- Web server management (Apache, Nginx)
-- Database server management (MySQL, PostgreSQL)
-- Service type abstraction
-- Remote server support (future)
-
-#### `hosting_task`
-**Purpose**: Task queue and execution
-
-**Key Files**:
-- `src/Entity/HostingTask.php` - Task entity definition
-- `src/Entity/HostingTaskLog.php` - Task log storage
-- `src/Service/TaskManager.php` - Task orchestration
-- `src/Plugin/QueueWorker/HostingTaskQueueWorker.php` - Queue worker
-
-**Features**:
-- Asynchronous task execution
-- Task logging and status tracking
-- Queue management
-- Task chaining and dependencies (future)
-
-#### `hosting_client`
-**Purpose**: Client management and multi-tenancy
-
-**Key Files**:
-- `src/Entity/HostingClient.php` - Client entity definition
-- `src/Form/HostingClientForm.php` - Client create/edit form
-- `src/Service/ClientManager.php` - Business logic service
-
-**Features**:
-- Client organization management
-- Site ownership
-- Quota management (future)
-- Access control integration
-
-#### `hosting_package`
-**Purpose**: Package and distribution tracking
-
-**Key Files**:
-- `src/Entity/HostingPackage.php` - Package entity definition
-- `src/Service/PackageManager.php` - Package discovery
-
-**Features**:
-- Drupal core version tracking
-- Module version tracking
-- Update status monitoring
-- Security advisory integration (future)
+Each submodule has its own `.info.yml`, `.services.yml`, and standard Drupal module structure.
 
 ## Entity Architecture
 
-### Entity Design Pattern
+### Entity Types
 
-**Base Interface**: `HostingContextInterface`
+| Entity Type ID | Class | Module | Purpose |
+|---|---|---|---|
+| `hosting_site` | `HostingSite` | hosting_site | Drupal site installation |
+| `hosting_site_backup` | `HostingSiteBackup` | hosting_site | Backup record |
+| `hosting_platform` | `HostingPlatform` | hosting_platform | Drupal codebase/distribution |
+| `hosting_server` | `HostingServer` | hosting_server | Service provider |
+| `hosting_service_instance` | `HostingServiceInstance` | hosting_server | Service config on a server |
+| `hosting_task` | `HostingTask` | hosting_task | Queued operation |
+| `hosting_task_log` | `HostingTaskLog` | hosting_task | Task execution log entry |
+| `hosting_client` | `HostingClient` | hosting_client | Client/organization |
+| `hosting_client_user` | `HostingClientUser` | hosting_client | Client ↔ user mapping |
+| `hosting_package` | `HostingPackage` | hosting_package | Tracked Drupal package |
+| `hosting_package_instance` | `HostingPackageInstance` | hosting_package | Package on a platform |
+| `hosting_context` | `HostingContext` | hosting | Entity ↔ context name mapping |
+
+### Handler Classes
+
+Most entities have dedicated handler classes:
+
+- **ListBuilder** — Entity listing pages (e.g., `HostingSiteListBuilder`)
+- **ViewBuilder** — Entity view rendering (e.g., `HostingSiteViewBuilder`)
+- **Access** — Access control (e.g., `HostingPlatformAccess`)
+
+### HostingContextInterface
 
 All hosting entities implement a common interface:
 
 ```php
 interface HostingContextInterface extends ContentEntityInterface {
-  /**
-   * Gets the context name.
-   */
-  public function getContextName(): string;
-  
-  /**
-   * Gets the context type.
-   */
-  public function getContextType(): string;
-  
-  /**
-   * Converts entity to context array.
-   */
-  public function toContext(): array;
+    public function getContextName(): string;
+    public function getContextType(): string;
+    public function toContext(): array;
 }
 ```
 
-### Site Entity
+### Core Entities in Detail
 
-**Entity ID**: `hosting_site`
+#### HostingSite
 
-**Key Fields**:
-- `field_hosting_domain` - Site domain name
-- `field_hosting_platform` - Reference to platform entity
-- `field_hosting_db_server` - Reference to database server
-- `field_hosting_status` - Enabled/disabled/deleted
-- `field_hosting_install_profile` - Drupal installation profile
-- `field_hosting_language` - Default language
-- `field_hosting_client` - Reference to client (owner)
+- **Domain** — primary domain name
+- **Platform** — entity reference to hosting_platform
+- **Database server** — entity reference to hosting_server
+- **Status** — enabled / disabled / deleted
+- **Install profile**, **language**, **client** (owner)
 
-**Methods**:
-```php
-class HostingSite extends ContentEntityBase implements HostingContextInterface {
-  public function getContextName(): string {
-    return $this->get('field_hosting_domain')->value;
-  }
-  
-  public function toContext(): array {
-    return [
-      'type' => 'site',
-      'uri' => $this->get('field_hosting_domain')->value,
-      'parent' => $this->getPlatform()->getContextName(),
-      'db_server' => $this->getDbServer()->getContextName(),
-      'web_server' => $this->getWebServer()->getContextName(),
-      'root' => $this->getPlatform()->get('field_hosting_root')->value,
-    ];
-  }
-}
-```
+#### HostingPlatform
 
-### Platform Entity
+- **Root path** — file system path to Drupal codebase
+- **Web server** — entity reference to hosting_server
+- **Status** — enabled / disabled / locked / deleted
 
-**Entity ID**: `hosting_platform`
+#### HostingServer
 
-**Key Fields**:
-- `field_hosting_name` - Platform name
-- `field_hosting_root` - File system path
-- `field_hosting_web_server` - Reference to web server
-- `field_hosting_status` - Enabled/disabled/deleted
-- `field_hosting_publish_path` - Public directory path
+- **Hostname** — server hostname
+- **Service instances** — references to hosting_service_instance entities
+- **Service types**: web (Apache/Nginx), db (MySQL), ssl, cron
 
-**Context Example**:
-```yaml
-# platform_d11.platform.yml
-type: platform
-root: /var/aegir/platforms/drupal-11
-web_server: server_master
-publish_path: web
-```
+#### HostingTask
 
-### Server Entity
-
-**Entity ID**: `hosting_server`
-
-**Key Fields**:
-- `field_hosting_name` - Server name
-- `field_hosting_hostname` - Server hostname
-- `field_hosting_services` - Service configuration (web, db, etc.)
-- `field_hosting_remote` - Is remote server (future)
-
-**Service Configuration**:
-```php
-$services = [
-  'web' => [
-    'type' => 'apache',
-    'restart_command' => 'sudo systemctl reload apache2',
-    'vhost_path' => '/etc/apache2/sites-available',
-  ],
-  'db' => [
-    'type' => 'mysql',
-    'db_host' => 'localhost',
-    'db_port' => 3306,
-  ],
-];
-```
+- **Type** — install, verify, delete, clone, migrate, backup, restore, etc.
+- **Target entity** — the hosting entity this task operates on
+- **Status** — queued, processing, completed, error
+- **Log entries** — via HostingTaskLog child entities
 
 ## Task Queue System
 
 ### Task Lifecycle
 
 ```
-1. Task Creation (Entity Save Hook)
-   ↓
-2. Queue Insertion (QueueDispatcher)
-   ↓
-3. Cron Processing (QueueWorker)
-   ↓
-4. Backend Invocation (BackendInvoker)
-   ↓
-5. Status Update (TaskManager)
-```
-
-### Task Creation
-
-Tasks are automatically created via entity save hooks:
-
-```php
-/**
- * Implements hook_ENTITY_TYPE_insert().
- */
-function hosting_site_hosting_site_insert(HostingSite $site) {
-  $task = HostingTask::create([
-    'type' => 'install',
-    'target_entity_type' => 'hosting_site',
-    'target_entity_id' => $site->id(),
-    'status' => 'queued',
-  ]);
-  $task->save();
-}
+1. Entity operation triggers task creation (hook or form)
+        ↓
+2. QueueDispatcher inserts task into Drupal queue
+        ↓
+3. Cron runs → HostingTaskQueueWorker processes task
+        ↓
+4. BackendInvoker shells out: drush provision:{operation} {context_name}
+        ↓
+5. TaskManager updates task status from exit code + output
 ```
 
 ### Queue Worker
 
-**Plugin ID**: `hosting_task_queue_worker`
+**Plugin ID**: `hosting_task`
 
 ```php
-/**
- * @QueueWorker(
- *   id = "hosting_task_queue_worker",
- *   title = @Translation("Hosting Task Queue Worker"),
- *   cron = {"time" => 60}
- * )
- */
+#[QueueWorker(
+    id: 'hosting_task',
+    title: new TranslatableMarkup('Hosting task queue'),
+    cron: ['time' => 60]
+)]
 class HostingTaskQueueWorker extends QueueWorkerBase {
-  public function processItem($data) {
-    $task = HostingTask::load($data->task_id);
-    
-    // Update status
-    $task->set('status', 'processing');
-    $task->save();
-    
-    // Execute backend command
-    $result = $this->backendInvoker->execute(
-      'provision-' . $task->get('type')->value,
-      '@' . $task->getTargetEntity()->getContextName()
-    );
-    
-    // Update task with result
-    $task->set('status', $result['success'] ? 'completed' : 'error');
-    $task->set('log', $result['output']);
-    $task->save();
-  }
+    public function processItem($data): void {
+        $this->taskManager->runTaskId((int) $data['task_id']);
+    }
 }
+```
+
+The `cron: ['time' => 60]` annotation tells Drupal to process this queue for up to 60 seconds per cron run.
+
+### Triggering Queue Processing
+
+**Automatic** (system cron):
+```bash
+*/5 * * * * cd /var/aegir/aegir-2601 && ./vendor/bin/drush cron
+```
+
+**Manual** (immediate):
+```bash
+drush hosting:task-run
 ```
 
 ### Task Types
 
-| Task Type | Description | Command |
-|-----------|-------------|---------|
-| `install` | Install new site | `provision-install` |
-| `verify` | Verify configuration | `provision-verify` |
-| `delete` | Delete site | `provision-delete` |
-| `clone` | Clone site | `provision-clone` |
-| `migrate` | Migrate to new platform | `provision-migrate` |
-| `backup` | Backup site | `provision-backup` |
-| `restore` | Restore from backup | `provision-restore` |
-### Cron and Queue Management
+| Type | Description | Backend Command |
+|---|---|---|
+| install | Install new site | `provision:install` |
+| verify | Verify configuration | `provision:verify` |
+| delete | Delete site/platform | `provision:delete` |
+| clone | Clone site | `provision:clone` |
+| migrate | Migrate to new platform | `provision:migrate` |
+| backup | Backup site | `provision:backup` |
+| restore | Restore from backup | `provision:restore` |
+| deploy | Deploy backup | `provision:deploy` |
+| enable | Enable site | `provision:enable` |
+| disable | Disable site | `provision:disable` |
+| lock | Lock context | `provision:lock` |
+| unlock | Unlock context | `provision:unlock` |
+| login-reset | Reset admin login | `provision:login-reset` |
 
-**Current Implementation**: Aegir D11 uses Drupal's standard Queue API and cron system.
-
-#### Queue Configuration
-
-**File**: `hosting_task/hosting_task.module`
-
-```php
-function hosting_task_hosting_queue_info() {
-  return [
-    'tasks' => [
-      'label' => t('Tasks'),
-      'description' => t('Execute provisioning tasks.'),
-      'type' => 'serial',
-      'frequency' => 300,        // Run every 5 minutes
-      'items' => 5,              // Process 5 items per run
-      'queue_id' => 'hosting_task',
-      'max_threads' => 6,        // Future: parallel execution
-      'min_threads' => 1,
-      'threshold' => 100,
-      'enabled' => TRUE,
-    ],
-  ];
-}
-```
-
-#### QueueWorker Plugin
-
-**File**: `hosting_task/src/Plugin/QueueWorker/HostingTaskQueueWorker.php`
-
-```php
-/**
- * @QueueWorker(
- *   id = "hosting_task",
- *   title = @Translation("Hosting task queue"),
- *   cron = {"time" = 60}
- * )
- */
-class HostingTaskQueueWorker extends QueueWorkerBase {
-  public function processItem($data): void {
-    $this->taskManager->runTaskId((int) $data['task_id']);
-  }
-}
-```
-
-The `cron = {"time" = 60}` annotation tells Drupal to process this queue for up to 60 seconds during each cron run.
-
-#### Triggering Queue Processing
-
-**Automatic** (via system cron):
-```bash
-# System crontab (runs every 5 minutes)
-*/5 * * * * cd /var/aegir/aegir-2601 && ./vendor/bin/drush cron
-```
-
-**Manual** (immediate processing):
-```bash
-drush hosting:task-run
-```
-
-#### Comparison with Drupal 7 Aegir
+### Comparison with Drupal 7 Aegir
 
 | Feature | D7 Aegir | D11 Aegir |
-|---------|----------|----------|
+|---|---|---|
 | Cron trigger | `drush @hostmaster hosting-dispatch` | `drush cron` |
 | Queue system | Custom dispatcher | Drupal Queue API |
-| Multiple queues | Yes (tasks, backups, stats) | Single queue (tasks only) |
-| Queue admin UI | `/admin/hosting/queues` | Not implemented |
-| Per-queue frequency | Configurable | Fixed in annotation |
-| Queue enable/disable | UI toggle | Annotation only |
-| Task retry logic | Basic | Exponential backoff |
-| Streaming output | No | Yes |
+| Multiple queues | Yes (tasks, backups, stats) | Single queue (tasks) |
+| Queue admin UI | `/admin/hosting/queues` | Configuration form |
+| Task streaming | No | Yes (real-time output) |
+| Task retry | Basic | Exponential backoff |
 
-**Missing from D11**:
-- Queue management admin UI
-- Multiple queue types (backups, statistics, SSL renewals)
-- Per-queue frequency configuration UI
-- Queue statistics dashboard
+## Services
 
-**Improvements in D11**:
-- Modern QueueWorker plugin system
-- Built-in queue locking (prevents concurrent runs)
-- Exponential backoff retry logic
-- Real-time streaming task output
-- Task cancellation with process killing
+### Core Services (hosting.services.yml)
 
-**Future Plans**: See [hosting_task TODO](../web/modules/contrib/aegir-hosting/doc/TODO.md) for planned queue enhancements.
-## Manager Services
+| Service ID | Class | Purpose |
+|---|---|---|
+| `hosting.context_registry` | `ContextRegistry` | Entity ↔ context synchronization |
+| `hosting.backend_invoker` | `BackendInvoker` | Shell execution of Drush provision commands |
+| `hosting.queue_dispatcher` | `QueueDispatcher` | Task queue orchestration |
+| `hosting.queue_runner` | `QueueRunner` | Queue processing |
+| `hosting.feature_manager` | `FeatureManager` | Feature/module management |
+| `hosting.sidebar_builder` | `SidebarBuilder` | Sidebar content assembly |
+| `hosting.icon_provider` | `HostingIconProvider` | SVG icon sprite URL resolution (theme-agnostic) |
 
-Manager services encapsulate business logic and validation.
+### Per-Module Services
 
-### SiteManager Service
+| Module | Key Services |
+|---|---|
+| hosting_site | `hosting_site.manager`, `hosting_site.domain_validator`, `hosting_site.backup_manager` |
+| hosting_platform | `hosting_platform.manager` |
+| hosting_server | `hosting.service_manager`, `hosting.server_manager`, `hosting.ip_manager` |
+| hosting_task | `hosting.task_manager`, `hosting.task_log_manager`, `hosting.task_availability_resolver`, `hosting.task_log_builder` |
+| hosting_client | `hosting_client.manager`, `hosting_client.access_manager` |
+| hosting_package | `hosting_package.version_parser`, `hosting_package.discovery`, `hosting_package.sync`, `hosting_package.comparison` |
+| hosting_db_server | `hosting_db_server.resolver`, `hosting_db_server.credentials` |
 
-**Service ID**: `hosting_site.site_manager`
+## Forms
 
-**Responsibilities**:
-- Domain validation
-- Site status management
-- Clone/migrate coordination
-- Backup management
+### Form Classes by Module
 
-**Example**:
-```php
-class SiteManager {
-  public function isDomainValid(string $domain): bool {
-    // Validate domain format
-    if (!preg_match('/^[a-z0-9.-]+\.[a-z]{2,}$/i', $domain)) {
-      return FALSE;
-    }
-    
-    // Check if domain already exists
-    $existing = $this->entityTypeManager
-      ->getStorage('hosting_site')
-      ->loadByProperties(['field_hosting_domain' => $domain]);
-    
-    return empty($existing);
-  }
-  
-  public function cloneSite(HostingSite $source, string $new_domain): HostingSite {
-    // Create new site entity
-    $clone = $source->createDuplicate();
-    $clone->set('field_hosting_domain', $new_domain);
-    $clone->save();
-    
-    // Create clone task
-    $task = HostingTask::create([
-      'type' => 'clone',
-      'target_entity' => $clone,
-      'source_entity' => $source,
-    ]);
-    $task->save();
-    
-    return $clone;
-  }
-}
-```
+| Module | Forms |
+|---|---|
+| **hosting** | `HostingSettingsForm`, `HostingFeaturesForm`, `HostingQueuesForm` |
+| **hosting_site** | `HostingSiteForm`, `SiteBackupForm`, `SiteCloneForm`, `SiteDeleteTaskForm`, `SiteDisableForm`, `SiteEnableForm`, `SiteMigrateForm`, `SiteResetPasswordForm`, `SiteRestoreForm`, `SiteVerifyForm` |
+| **hosting_platform** | `HostingPlatformForm`, `PlatformDeleteTaskForm`, `PlatformLockForm`, `PlatformMigrateForm`, `PlatformUnlockForm`, `PlatformVerifyForm` |
+| **hosting_server** | `HostingServerForm`, `HostingServiceInstanceForm`, `ServerVerifyForm` |
+| **hosting_client** | `HostingClientForm`, `HostingClientSettingsForm` |
+| **hosting_task** | `HostingTaskConfirmFormBase` |
 
-### PlatformManager Service
-
-**Service ID**: `hosting_platform.platform_manager`
-
-**Responsibilities**:
-- Path validation
-- Drupal detection
-- Site listing
-- Platform verification
-
-### ServerManager Service
-
-**Service ID**: `hosting_server.server_manager`
-
-**Responsibilities**:
-- Service validation
-- Connection testing
-- Configuration generation
-- Service restart coordination
-
-## Forms and Validation
-
-### Form Design Pattern
-
-**Base Class**: `ContentEntityForm`
-
-```php
-class HostingSiteForm extends ContentEntityForm {
-  public function form(array $form, FormStateInterface $form_state) {
-    $form = parent::form($form, $form_state);
-    
-    // Add custom form elements
-    $form['domain_validation'] = [
-      '#type' => 'item',
-      '#markup' => '<div id="domain-validation"></div>',
-    ];
-    
-    return $form;
-  }
-  
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-    
-    $domain = $form_state->getValue('field_hosting_domain')[0]['value'];
-    
-    // Delegate validation to manager service
-    if (!$this->siteManager->isDomainValid($domain)) {
-      $form_state->setError(
-        $form['field_hosting_domain'],
-        $this->t('This domain is already in use or invalid.')
-      );
-    }
-  }
-}
-```
-
-### Validation Rules
-
-**Domain Names**:
-- Lowercase alphanumeric with dots and hyphens
-- Valid TLD required
-- Unique across all sites
-
-**File Paths**:
-- Absolute paths only
-- Must be readable/writable
-- Must contain valid Drupal installation
-
-**Server Names**:
-- Alphanumeric with underscores
-- Prefix conventions: `server_*`
+Task operation forms (verify, backup, clone, etc.) are confirm forms that create a HostingTask entity on submission.
 
 ## Context Registry
 
-### Purpose
+`ContextRegistry` (`src/Service/ContextRegistry.php`) is the bridge between Drupal entities and provision contexts.
 
-The Context Registry maintains bidirectional synchronization between Drupal entities and Drush contexts (YAML aliases).
+### Bidirectional Sync
 
-### Service Definition
+- **Entity save** → `saveContextToBackend()`:
+  1. Converts entity fields to context array via `toContext()`
+  2. Writes YAML alias to `drush/sites/aegir/{name}.site.yml`
+  3. Calls `drush provision:save {name}` via BackendInvoker
 
-**Service ID**: `hosting.context_registry`
+- **Entity delete** → `deleteContextFromBackend()`:
+  1. Removes YAML alias file
+  2. Optionally calls `drush provision:delete {name}`
 
-**Class**: `Drupal\hosting\Service\ContextRegistry`
+### HostingContext Entity
 
-### Key Methods
+The `hosting_context` entity stores the mapping between a Drupal entity (type + ID) and its context name. This enables lookups in both directions:
 
-```php
-class ContextRegistry {
-  /**
-   * Writes entity data to YAML context file.
-   */
-  public function writeContext(HostingContextInterface $entity): void {
-    $context_name = $entity->getContextName();
-    $context_data = $entity->toContext();
-    
-    $yaml_path = $this->getContextPath($context_name, $entity->getContextType());
-    $this->fileSystem->saveData(
-      Yaml::encode($context_data),
-      $yaml_path,
-      FileSystemInterface::EXISTS_REPLACE
-    );
-  }
-  
-  /**
-   * Reads context data from YAML file.
-   */
-  public function readContext(string $context_name, string $type): array {
-    $yaml_path = $this->getContextPath($context_name, $type);
-    
-    if (!file_exists($yaml_path)) {
-      throw new \Exception("Context not found: $context_name");
-    }
-    
-    return Yaml::parseFile($yaml_path);
-  }
-  
-  /**
-   * Gets the file path for a context.
-   */
-  protected function getContextPath(string $name, string $type): string {
-    return sprintf(
-      '%s/.drush/sites/%s.%s.yml',
-      $this->getHomeDirectory(),
-      $name,
-      $type
-    );
-  }
-}
-```
+- Given a Drupal entity → find its context name
+- Given a context name → find the corresponding entity
 
-### Integration with Entities
+## Plugin System
 
-```php
-/**
- * Implements hook_ENTITY_TYPE_presave().
- */
-function hosting_hosting_site_presave(HostingSite $site) {
-  // Write context before saving entity
-  \Drupal::service('hosting.context_registry')->writeContext($site);
-}
+The hosting_server module provides two Drupal plugin managers:
 
-/**
- * Implements hook_ENTITY_TYPE_delete().
- */
-function hosting_hosting_site_delete(HostingSite $site) {
-  // Remove context file when entity is deleted
-  \Drupal::service('hosting.context_registry')->deleteContext(
-    $site->getContextName(),
-    'site'
-  );
-}
-```
+### HostingServiceTypeManager
+
+Manages service type definitions (http, db, ssl, cron). Plugins live in `Plugin/HostingServiceType/`.
+
+### HostingServiceProviderManager
+
+Manages service provider implementations (Apache, MySQL, etc.). Plugins live in `Plugin/HostingServiceProvider/`.
+
+Both extend `DefaultPluginManager` and use standard Drupal plugin discovery with annotations/attributes.
 
 ## Drush Commands
 
-### Frontend Drush Commands
+| Command Class | Service ID | Module | Key Commands |
+|---|---|---|---|
+| `HostingCommands` | `hosting.commands` | hosting | `hosting:task-run`, queue management |
+| `HostingTaskCommands` | `hosting_task.commands` | hosting_task | Task execution, status |
+| `HostingServerCommands` | `hosting_server.commands` | hosting_server | Server management |
 
-**Command File**: `src/Commands/HostingCommands.php`
-
-**Available Commands**:
-
-#### `hosting:sync-contexts`
-Synchronizes contexts from YAML files to entities.
-
-```bash
-drush hosting:sync-contexts
-```
-
-**Use Case**: Import existing Aegir 3.x sites into Aegir 4.x
-
-#### `hosting:verify-all`
-Queues verify tasks for all hosting entities.
-
-```bash
-drush hosting:verify-all --entity-type=site
-```
-
-#### `hosting:task-run`
-Processes queued tasks immediately (without waiting for cron).
-
-```bash
-drush hosting:task-run
-```
+Registered via `drush.services.yml` in each module.
 
 ## Development Guidelines
 
-### Entity Development
+### Key Rules
 
-**DO**:
-- ✓ Use field API for all entity properties
-- ✓ Implement `HostingContextInterface`
-- ✓ Delegate business logic to manager services
-- ✓ Use entity query for data access
-- ✓ Provide entity operation links
+- Entities use Drupal's content entity system (not config entities)
+- All backend operations go through the task queue — never call provision commands directly from form submit handlers
+- ContextRegistry handles entity ↔ context sync automatically
+- Forms for task operations extend confirm form patterns
+- Service IDs follow `hosting.{name}` or `hosting_{module}.{name}` convention
 
-**DON'T**:
-- ✗ Store @ prefix in database
-- ✗ Hardcode paths or service names
-- ✗ Bypass abstraction layers
-- ✗ Implement business logic in forms
-- ✗ Access context files directly
+### Adding a New Entity
 
-### Form Development
+1. Define entity class in `src/Entity/` implementing `HostingContextInterface`
+2. Create list builder and view builder
+3. Add form class in `src/Form/`
+4. Define routes, links, and permissions
+5. Add entity ↔ context mapping in `ContextRegistry`
+6. Create task forms for entity operations
 
-**DO**:
-- ✓ Extend `ContentEntityForm`
-- ✓ Use manager services for validation
-- ✓ Provide clear error messages
-- ✓ Use AJAX for dynamic updates
-- ✓ Follow Drupal form API patterns
+### Adding a New Task Type
 
-**DON'T**:
-- ✗ Put validation logic in form class
-- ✗ Directly execute backend commands
-- ✗ Skip CSRF token validation
-- ✗ Hardcode form element values
-
-### Service Development
-
-**DO**:
-- ✓ Inject dependencies via constructor
-- ✓ Use dependency injection
-- ✓ Follow single responsibility principle
-- ✓ Provide interfaces for testability
-- ✓ Log all operations
-
-**DON'T**:
-- ✗ Use static methods
-- ✗ Access global state directly
-- ✗ Mix concerns in one service
-- ✗ Skip error handling
-
-## Testing
-
-### Unit Tests
-
-**Location**: `tests/src/Unit/`
-
-**Example**:
-```php
-class SiteManagerTest extends UnitTestCase {
-  public function testDomainValidation() {
-    $manager = new SiteManager(...);
-    
-    $this->assertTrue($manager->isDomainValid('example.com'));
-    $this->assertFalse($manager->isDomainValid('invalid'));
-    $this->assertFalse($manager->isDomainValid('UPPERCASE.COM'));
-  }
-}
-```
-
-### Functional Tests
-
-**Location**: `tests/src/Functional/`
-
-**Example**:
-```php
-class SiteCreationTest extends BrowserTestBase {
-  public function testCreateSite() {
-    $admin = $this->drupalCreateUser(['administer sites']);
-    $this->drupalLogin($admin);
-    
-    $this->drupalGet('/admin/hosting/sites/add');
-    $this->assertSession()->statusCodeEquals(200);
-    
-    $this->submitForm([
-      'field_hosting_domain[0][value]' => 'test.example.com',
-      'field_hosting_platform' => 1,
-    ], 'Save');
-    
-    $this->assertSession()->pageTextContains('Site created');
-  }
-}
-```
-
-## Next Steps
-
-- **[Backend Documentation](Backend.md)** - Learn about the provision system
-- **[Theme Documentation](Theme.md)** - Explore the Eldir theme
-- **[Architecture Overview](HOME.md)** - Return to main documentation
+1. Define form extending confirm form base
+2. Route the form
+3. Implement task creation in form submit handler
+4. Ensure BackendInvoker maps to the correct `provision:{operation}` command
 
 ---
 
-**Questions?** Check the [hosting module AI instructions](../web/modules/contrib/aegir-hosting/.github/AI-INSTRUCTIONS.md) for detailed technical guidance.
+**Related**: [HOME.md](HOME.md) · [Backend.md](Backend.md) · [Theme.md](Theme.md) · [hosting-d11.md](../web/modules/contrib/aegir-hosting/doc/hosting-d11.md)

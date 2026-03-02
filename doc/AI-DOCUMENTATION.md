@@ -1,6 +1,6 @@
 # Documentation for AI Coding Agents
 
-**Last Updated**: January 29, 2026  
+**Last Updated**: March 1, 2026
 **Audience**: AI assistants working with Aegir codebase
 
 ## Overview
@@ -11,14 +11,15 @@ Aegir uses a **layered architecture** with multiple Git repositories. This page 
 
 If you are an AI assistant (Claude, GPT-4, GitHub Copilot, etc.) working in the Aegir codebase:
 
-**📘 Start Here**: [.github/AI-AGENT-GUIDE.md](../.github/AI-AGENT-GUIDE.md)
+**Start Here**: [.github/AGENTS.md](../.github/AGENTS.md)
 
-This comprehensive guide explains:
+This guide explains:
 - How the four repositories relate to each other
-- Where to find AI instructions vs. published docs
-- Navigation strategies for cross-repository work
-- When to reference parent or child components
-- Best practices for working across the codebase
+- Architecture overview and data flow
+- Key concepts and naming conventions
+- Known issues and anti-patterns
+
+For actionable step-by-step procedures, see: [.github/SKILLS.md](../.github/SKILLS.md)
 
 ## Repository Structure
 
@@ -28,61 +29,64 @@ Aegir consists of one main repository and three component repositories:
 
 - **GitHub**: https://github.com/argopecten/aegir-hostmaster
 - **Local**: `/var/aegir/aegir-2601/`
-- **AI Docs**: 
-  - [.github/ARCHITECTURE.md](../.github/ARCHITECTURE.md) - Overall architecture
-  - [.github/AI-AGENT-GUIDE.md](../.github/AI-AGENT-GUIDE.md) - Navigation guide
-  - [.github/TODO-RECIPES.md](../.github/TODO-RECIPES.md) - Recipes implementation
-- **Published Docs**: [doc/](.) - This folder (HOME.md, Frontend.md, Backend.md, Theme.md, TODO.md)
+- **AI Docs**:
+  - [.github/AGENTS.md](../.github/AGENTS.md) — Architecture + context for AI agents
+  - [.github/SKILLS.md](../.github/SKILLS.md) — Actionable instruction sets
+- **Published Docs**: [doc/](.) — This folder (HOME.md, Frontend.md, Backend.md, Theme.md, TODO.md)
 
 ### Component 1: aegir-hosting (Frontend)
 
 - **GitHub**: https://github.com/argopecten/aegir-hosting
 - **Local**: `/var/aegir/aegir-2601/web/modules/contrib/aegir-hosting/`
-- **AI Docs**: [.github/AI-INSTRUCTIONS.md](../web/modules/contrib/aegir-hosting/.github/AI-INSTRUCTIONS.md) (2000+ lines)
+- **AI Docs**:
+  - [.github/AGENTS.md](../web/modules/contrib/aegir-hosting/.github/AGENTS.md) — Entity system, services, architecture
+  - [.github/SKILLS.md](../web/modules/contrib/aegir-hosting/.github/SKILLS.md) — Entity creation, forms, task queue, testing
 - **Published Docs**: [doc/](../web/modules/contrib/aegir-hosting/doc/) (Home.md, hosting-d11.md)
 - **Scope**: Drupal entities, forms, task queue, services
 
 ### Component 2: aegir-provision (Backend)
 
 - **GitHub**: https://github.com/argopecten/aegir-provision
-- **Local**: `/var/aegir/aegir-2601/drush/Commands/contrib/aegir-provision/`
-- **AI Docs**: [.github/AI-INSTRUCTIONS.md](../drush/Commands/contrib/aegir-provision/.github/AI-INSTRUCTIONS.md) (990+ lines)
-- **Published Docs**: [doc/](../drush/Commands/contrib/aegir-provision/doc/) (Home.md, provision-d11.md)
+- **Local**: `/var/aegir/aegir-2601/vendor/argopecten/aegir-provision/`
+- **AI Docs**:
+  - [.github/AGENTS.md](../vendor/argopecten/aegir-provision/.github/AGENTS.md) — Command system, context, services
+  - [.github/SKILLS.md](../vendor/argopecten/aegir-provision/.github/SKILLS.md) — Command creation, service implementation, Drush 13
+- **Published Docs**: [doc/](../vendor/argopecten/aegir-provision/doc/) (Home.md, provision-d11.md)
 - **Scope**: Drush commands, context system, Apache/MySQL services
 
 ### Component 3: aegir-eldir (Theme)
 
 - **GitHub**: https://github.com/argopecten/aegir-eldir
 - **Local**: `/var/aegir/aegir-2601/web/themes/contrib/aegir-eldir/`
-- **AI Docs**: [.github/AI-INSTRUCTIONS.md](../web/themes/contrib/aegir-eldir/.github/AI-INSTRUCTIONS.md) (1200+ lines)
+- **AI Docs**:
+  - [.github/AGENTS.md](../web/themes/contrib/aegir-eldir/.github/AGENTS.md) — Templates, CSS, JS, preprocess
+  - [.github/SKILLS.md](../web/themes/contrib/aegir-eldir/.github/SKILLS.md) — Template creation, styling, behaviors
 - **Published Docs**: [doc/](../web/themes/contrib/aegir-eldir/doc/) (Home.md, eldir-d11.md)
 - **Scope**: Twig templates, CSS, JavaScript
 
 ## Documentation Types
 
-### AI Instructions (`.github/` folders)
+### AI Agent Docs (`.github/` folders)
 
-**Purpose**: Detailed technical guidance for AI coding agents  
-**Format**: Comprehensive markdown with code examples, patterns, architecture  
-**Audience**: AI assistants (Claude, GPT-4, Copilot)
+**Purpose**: Technical guidance for AI coding agents
+**Format**: Comprehensive markdown with code examples, patterns, architecture
 
 **Files**:
-- `ARCHITECTURE.md` - Integration architecture (main repo only)
-- `AI-INSTRUCTIONS.md` - Component-specific details (all components)
-- `AI-AGENT-GUIDE.md` - Navigation guide (main repo only)
-- `TODO-*.md` - AI-readable task lists
+- `AGENTS.md` — Component architecture, context, rules, known issues
+- `SKILLS.md` — Step-by-step actionable instruction sets for specific tasks
+- `TODO-*.md` — AI-readable task lists
 
 ### Published Documentation (`doc/` folders)
 
-**Purpose**: User-facing documentation for developers and site builders  
-**Format**: Markdown synced to GitHub  
+**Purpose**: User-facing documentation for developers and site builders
+**Format**: Markdown synced to GitHub
 **Audience**: Human developers using Aegir
 
 **Files**:
-- `HOME.md` or `Home.md` - Main entry point
-- `Frontend.md`, `Backend.md`, `Theme.md` - Component guides (main repo)
-- `*-d11.md` - Drupal 11 implementations (components)
-- `TODO.md` - Development roadmap (main repo)
+- `HOME.md` or `Home.md` — Main entry point
+- `Frontend.md`, `Backend.md`, `Theme.md` — Component guides (main repo)
+- `*-d11.md` — Drupal 11 implementations (components)
+- `TODO.md` — Development roadmap (main repo)
 
 ## Quick Start for AI Agents
 
@@ -95,37 +99,11 @@ git remote -v      # Check which repository you're in
 
 ### Step 2: Read Relevant Documentation
 
-- **In main repo** → Read [.github/ARCHITECTURE.md](../.github/ARCHITECTURE.md) first
-- **In aegir-hosting** → Read [.github/AI-INSTRUCTIONS.md](../web/modules/contrib/aegir-hosting/.github/AI-INSTRUCTIONS.md)
-- **In aegir-provision** → Read [.github/AI-INSTRUCTIONS.md](../drush/Commands/contrib/aegir-provision/.github/AI-INSTRUCTIONS.md)
-- **In aegir-eldir** → Read [.github/AI-INSTRUCTIONS.md](../web/themes/contrib/aegir-eldir/.github/AI-INSTRUCTIONS.md)
+- **In main repo** → Read [.github/AGENTS.md](../.github/AGENTS.md) first
+- **In aegir-hosting** → Read [web/modules/contrib/aegir-hosting/.github/AGENTS.md](../web/modules/contrib/aegir-hosting/.github/AGENTS.md)
+- **In aegir-provision** → Read [vendor/argopecten/aegir-provision/.github/AGENTS.md](../vendor/argopecten/aegir-provision/.github/AGENTS.md)
+- **In aegir-eldir** → Read [web/themes/contrib/aegir-eldir/.github/AGENTS.md](../web/themes/contrib/aegir-eldir/.github/AGENTS.md)
 
-### Step 3: Understand Integration Points
+### Step 3: Perform Tasks
 
-Read [AI-AGENT-GUIDE.md](../.github/AI-AGENT-GUIDE.md) for:
-- How components communicate
-- Cross-repository workflows
-- When to update multiple repos
-- Documentation maintenance rules
-
-## For Human Developers
-
-If you're a human developer looking for AI documentation to understand the system better, the AI instructions can be valuable resources:
-
-- **System Architecture**: Start with [HOME.md](HOME.md) then [.github/ARCHITECTURE.md](../.github/ARCHITECTURE.md)
-- **Code Patterns**: Read component AI-INSTRUCTIONS.md files for detailed implementation patterns
-- **Integration**: [AI-AGENT-GUIDE.md](../.github/AI-AGENT-GUIDE.md) explains how components interact
-
-However, for getting started and basic usage, stick with the published docs in this folder.
-
-## See Also
-
-- [HOME.md](HOME.md) - Architecture overview (published)
-- [Frontend.md](Frontend.md) - Frontend component guide
-- [Backend.md](Backend.md) - Backend component guide
-- [Theme.md](Theme.md) - Theme component guide
-- [TODO.md](TODO.md) - Development roadmap
-
----
-
-**Note**: This is a meta-documentation page. For actual system documentation, start with [HOME.md](HOME.md).
+Read the component's `SKILLS.md` for step-by-step procedures for common tasks like creating entities, adding commands, writing templates, etc.

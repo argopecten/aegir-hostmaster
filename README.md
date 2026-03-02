@@ -177,11 +177,11 @@ Customize the installation by setting these environment variables before running
 
 ### For AI Coding Agents
 
-> **AI Assistants**: Start with **[.github/AI-AGENT-GUIDE.md](.github/AI-AGENT-GUIDE.md)** for complete navigation guidance
+> **AI Assistants**: Start with **[.github/AGENTS.md](.github/AGENTS.md)** for architecture and context
 
-- **[AI Agent Guide](.github/AI-AGENT-GUIDE.md)** - Navigation across all four repositories
-- **[Architecture (AI)](.github/ARCHITECTURE.md)** - Technical architecture for AI agents
-- **[AI Documentation](doc/AI-DOCUMENTATION.md)** - Overview of AI docs structure
+- **[AGENTS.md](.github/AGENTS.md)** — Architecture, concepts, and rules for AI agents
+- **[SKILLS.md](.github/SKILLS.md)** — Step-by-step actionable instruction sets
+- **[AI Documentation](doc/AI-DOCUMENTATION.md)** — Overview of AI docs structure
 
 ## 🛠️ Development Workflow
 
@@ -189,9 +189,9 @@ Customize the installation by setting these environment variables before running
 
 Each component has its own documentation:
 
-- **Backend**: [drush/Commands/contrib/aegir-provision/.github/AI-INSTRUCTIONS.md](drush/Commands/contrib/aegir-provision/.github/AI-INSTRUCTIONS.md)
-- **Frontend**: [web/modules/contrib/aegir-hosting/.github/AI-INSTRUCTIONS.md](web/modules/contrib/aegir-hosting/.github/AI-INSTRUCTIONS.md)
-- **Theme**: [web/themes/contrib/aegir-eldir/.github/AI-INSTRUCTIONS.md](web/themes/contrib/aegir-eldir/.github/AI-INSTRUCTIONS.md)
+- **Backend**: [vendor/argopecten/aegir-provision/.github/AGENTS.md](vendor/argopecten/aegir-provision/.github/AGENTS.md) + [SKILLS.md](vendor/argopecten/aegir-provision/.github/SKILLS.md)
+- **Frontend**: [web/modules/contrib/aegir-hosting/.github/AGENTS.md](web/modules/contrib/aegir-hosting/.github/AGENTS.md) + [SKILLS.md](web/modules/contrib/aegir-hosting/.github/SKILLS.md)
+- **Theme**: [web/themes/contrib/aegir-eldir/.github/AGENTS.md](web/themes/contrib/aegir-eldir/.github/AGENTS.md) + [SKILLS.md](web/themes/contrib/aegir-eldir/.github/SKILLS.md)
 
 ### Composer Management
 
