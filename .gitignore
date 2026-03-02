@@ -1,5 +1,6 @@
 # Composer-managed dependencies and files
 /vendor/
+/drush/
 /drush/Commands/contrib/
 
 # Drupal core and contributed projects (installed by Composer)
