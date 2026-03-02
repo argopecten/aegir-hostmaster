@@ -806,8 +806,26 @@ run_installation() {
     enable_aegir_modules
     clear_cache
     configure_webserver
+    enable_dispatch_cron
     
     print_installation_summary
+}
+
+enable_dispatch_cron() {
+    print_step "Enabling hosting dispatch and installing crontab entry..."
+    
+    if [ "${DRY_RUN:-false}" = "true" ]; then
+        print_info "[DRY RUN] Would run: drush hosting:dispatch-enable"
+        return
+    fi
+    
+    cd "${PROJECT_ROOT}"
+    if sudo -u "${AEGIR_USER}" ./vendor/bin/drush hosting:dispatch-enable 2>/dev/null; then
+        print_success "Hosting dispatch cron entry installed."
+    else
+        print_warning "Could not install crontab entry automatically."
+        print_info "Run manually: drush hosting:dispatch-enable"
+    fi
 }
 
 print_installation_summary() {
